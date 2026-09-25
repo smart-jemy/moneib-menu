@@ -1,5 +1,5 @@
 {
- "publishedAt": 1790291824343,
+ "publishedAt": 1790317022831,
  "settings": {
   "zone": "المنيب",
   "currency": "ج.م",
@@ -20,7 +20,8 @@
     "active": true
    }
   ],
-  "whatsapp": ""
+  "whatsapp": "",
+  "panelPin": "1234"
  },
  "restaurants": [
   {
