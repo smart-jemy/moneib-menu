@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://raw.githubusercontent.com; base-uri 'self'">
 <title>طلبات المنيب 🛵 — اطلب أونلاين</title>
 <style>
   :root { --primary:#FF5A00; --dark:#D94A00; --bg:#F6F4F1; --card:#fff; --text:#201D1A; --sec:#75706B; --line:#ECE6DF; }
@@ -244,7 +245,7 @@ function placeOrder() {
   CART = []; saveCart();
   view = { t: "done", id: order.id, eta: order.eta, total: order.total, text, wa };
   render();
-  if (wa) window.open("https://wa.me/" + wa + "?text=" + encodeURIComponent(text), "_blank");
+  if (wa) window.open("https://wa.me/" + wa + "?text=" + encodeURIComponent(text), "_blank", "noopener,noreferrer");
 }
 
 function renderDone(app) {
@@ -259,7 +260,7 @@ function renderDone(app) {
 }
 function sendWa() {
   const wa = view.wa;
-  if (wa) window.open("https://wa.me/" + wa + "?text=" + encodeURIComponent(view.text), "_blank");
+  if (wa) window.open("https://wa.me/" + wa + "?text=" + encodeURIComponent(view.text), "_blank", "noopener,noreferrer");
   else if (navigator.share) navigator.share({ text: view.text }).catch(() => {});
   else { navigator.clipboard.writeText(view.text); alert("تفاصيل الأوردر اتنسخت — ابعتها للمطعم"); }
 }
