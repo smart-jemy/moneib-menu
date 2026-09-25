@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>طلب مخصص ✍️ — طلبات المنيب</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cairo',system-ui,sans-serif;background:#060403;color:#FDF9F5;line-height:1.7;min-height:100svh;padding:30px 16px 60px}
+.aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.15;mix-blend-mode:screen}
+.blob.b1{width:460px;height:460px;background:#FF5A00;top:-120px;right:-100px}
+.blob.b2{width:380px;height:380px;background:#17A05D;bottom:-100px;left:-80px}
+.wrap{position:relative;z-index:1;max-width:560px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:9px;font-weight:900;font-size:19px;margin-bottom:26px}
+.brand .dot{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,#FF5A00,#FFB077);display:flex;align-items:center;justify-content:center;font-size:17px}
+.back{position:absolute;top:0;left:0;color:#BFB3AA;font-size:13px;text-decoration:none;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:7px 14px}
+.hero-t{font-size:clamp(25px,5vw,34px);font-weight:900;line-height:1.35}
+.hero-t .grad{background:linear-gradient(120deg,#FF5A00,#FFB077);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-p{color:#BFB3AA;font-size:14px;margin:10px 0 24px}
+.panel{background:#0D0805;border:1px solid rgba(255,255,255,.09);border-radius:24px;padding:24px}
+.field{margin-bottom:13px}
+.field label{font-size:12.5px;color:#9C9088;display:block;margin-bottom:6px;font-weight:700}
+.field input,.field select,.field textarea{width:100%;padding:12px 14px;border:1px solid rgba(255,255,255,.12);border-radius:13px;background:#120B06;color:#FDF9F5;font-size:14.5px;font-family:inherit;outline:none;transition:border-color .2s}
+.field textarea{min-height:96px;resize:vertical;line-height:1.8}
+.field input:focus,.field textarea:focus{border-color:#FF5A00}
+.hint{font-size:11.5px;color:#756B63;margin-top:5px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:560px){.row2{grid-template-columns:1fr}}
+.quick{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.quick button{background:rgba(255,90,0,.1);border:1px solid rgba(255,90,0,.3);color:#FFB077;font-size:11.5px;font-weight:700;padding:6px 12px;border-radius:99px;transition:.15s}
+.quick button:hover{background:rgba(255,90,0,.25)}
+.bigbtn{width:100%;background:linear-gradient(135deg,#17A05D,#0E7A45);color:#fff;font-weight:900;font-size:16px;border-radius:15px;padding:16px;margin-top:16px;box-shadow:0 10px 30px rgba(23,160,93,.25);transition:transform .2s}
+.bigbtn:hover{transform:translateY(-2px)}
+.done{display:none;text-align:center;padding:22px 6px}
+.done .big{font-size:52px}
+.done p{color:#9C9088;font-size:13.5px;margin:8px 0 16px}
+.fee-note{background:rgba(255,90,0,.07);border:1px solid rgba(255,90,0,.3);color:#FFB077;font-size:12.5px;font-weight:700;border-radius:12px;padding:10px 14px;margin-bottom:14px}
+footer{margin-top:30px;text-align:center;color:#57504A;font-size:11.5px}
+</style>
+</head>
+<body>
+<div class="aurora"><div class="blob b1"></div><div class="blob b2"></div></div>
+<div class="wrap">
+  <div class="brand" style="position:relative"><a class="back" href="../">→ الرئيسية</a><span class="dot">🛵</span> طلبات المنيب</div>
+  <div class="hero-t">طلب <span class="grad">مخصص</span> — أي حاجة من جوه المنيب</div>
+  <p class="hero-p">فول من عند الفولايه، دواء من الصيدلية، جوازات من عند المكتبة، حاجات من السوبر ماركت… اكتب طلبك بالتفصيل والكابتن بينفذه.</p>
+
+  <div class="panel">
+    <div id="formWrap">
+      <div class="fee-note">🛵 رسوم تنفيذ الأوردر المخصص: 15 ج.م + قيمة طلبك (نأكد السعر معاك قبل التنفيذ)</div>
+      <div class="field">
+        <label>اكتب طلبك بالتفصيل *</label>
+        <textarea id="o_desc" placeholder="مثال: كيلو فول بالسمنة من فول الأمل + 8 رغيف عيش بلدي سخن…"></textarea>
+        <div class="quick">
+          <button onclick="addQuick('أدوية من الصيدلية')">💊 أدوية</button>
+          <button onclick="addQuick('حاجات من السوبر ماركت')">🛒 سوبر ماركت</button>
+          <button onclick="addQuick('فطار من عند الفولايه')">🫓 فطار</button>
+          <button onclick="addQuick('حاجة من المحل اللي جنب المسجد')">🕌 من عند المحل</button>
+        </div>
+      </div>
+      <div class="field"><label>منين؟ (اسم المحل / المطعم — اختياري)</label><input id="o_shop" placeholder="مثال: صيدلية العزبي — شارع المنيب"></div>
+      <div class="row2">
+        <div class="field"><label>الميزانية التقريبية (ج.م)</label><input id="o_budget" inputmode="numeric" placeholder="مثال: 50"></div>
+        <div class="field"><label>وقت التنفيذ</label><select id="o_time"><option>في أسرع وقت</option><option>بعد ساعة</option><option>بعدين — نتفق عليه</option></select></div>
+      </div>
+      <div class="field"><label>اسمك *</label><input id="o_name" placeholder="اسم صاحب الطلب"></div>
+      <div class="field"><label>رقم الموبايل (واتساب) *</label><input id="o_phone" inputmode="numeric" placeholder="01xxxxxxxxx" style="direction:ltr;text-align:left"></div>
+      <div class="field"><label>عنوان التوصيل داخل المنيب *</label>
+        <select id="o_street"></select>
+        <input id="o_details" placeholder="رقم العمارة، الدور، علامة مميزة…" style="margin-top:8px">
+      </div>
+      <button class="bigbtn" onclick="sendCustom()">📲 ابعت الطلب للإدارة</button>
+      <div class="hint" style="margin-top:8px">الطلب بيوصلك تأكيده على واتساب — الإدارة بتتفق معاك على السعر النهائي قبل ما الكابتن يتحرك.</div>
+    </div>
+    <div class="done" id="doneBox">
+      <div class="big">✍️</div>
+      <h3 style="font-size:20px;font-weight:900;margin:8px 0">طلبك جاهز للإرسال!</h3>
+      <p>لو واتساب ما فتحش تلقائي دوس الزر تحت — وابقى مستني تأكيد الإدارة على السعر قبل التنفيذ.</p>
+      <button class="bigbtn" onclick="openWa()">📲 فتح واتساب تاني</button>
+      <button class="bigbtn" style="background:#0D0805;border:1px solid rgba(255,255,255,.15);box-shadow:none" onclick="location.reload()">طلب مخصص جديد</button>
+    </div>
+  </div>
+</div>
+<footer>طلبات المنيب — خدمة الأوردر المخصص • تطوير <b style="color:#FFB077">V2</b> © 2026</footer>
+
+<script>
+const CATALOG_URL = "https://raw.githubusercontent.com/smart-jemy/moneib-menu/main/catalog.json";
+let STORE_WA = "", lastText = "";
+(async () => {
+  try {
+    const cat = await (await fetch(CATALOG_URL + "?t=" + Date.now())).json();
+    STORE_WA = (cat.settings.whatsapp || "").replace(/[^0-9]/g, "");
+    document.getElementById("o_street").innerHTML =
+      (cat.settings.streets || ["شارع المنيب الرئيسي"]).map(s => `<option>${s}</option>`).join("");
+  } catch (e) {
+    document.getElementById("o_street").innerHTML = "<option>شارع المنيب الرئيسي</option>";
+  }
+})();
+function addQuick(t) {
+  const ta = document.getElementById("o_desc");
+  ta.value = ta.value ? ta.value + " + " + t : t;
+  ta.focus();
+}
+function sendCustom() {
+  const desc = document.getElementById("o_desc").value.trim();
+  const shop = document.getElementById("o_shop").value.trim();
+  const budget = document.getElementById("o_budget").value.trim();
+  const time = document.getElementById("o_time").value;
+  const name = document.getElementById("o_name").value.trim();
+  const phone = document.getElementById("o_phone").value.trim();
+  const street = document.getElementById("o_street").value;
+  const details = document.getElementById("o_details").value.trim();
+  if (desc.length < 5) { alert("اكتب طلبك بالتفصيل — إيه اللي عايزه بالظبط؟"); return; }
+  if (name.length < 3) { alert("اكتب اسمك"); return; }
+  if (!/^01\d{9}$/.test(phone)) { alert("رقم موبايل مصري صحيح يبدأ بـ 01 (11 رقم)"); return; }
+  if (!details) { alert("اكتب رقم العمارة أو علامة مميزة"); return; }
+  if (!STORE_WA) { alert("الخدمة بتفعّل قريباً — مفيش رقم واتساب للإدارة متسجل حالياً."); return; }
+  lastText = "✍️ *طلب مخصص — طلبات المنيب*\n\n"
+    + "📝 الطلب: " + desc + "\n"
+    + (shop ? "🏪 من: " + shop + "\n" : "")
+    + (budget ? "💰 الميزانية التقريبية: " + budget + " ج.م\n" : "")
+    + "⏰ التنفيذ: " + time + "\n"
+    + "🛵 رسوم التنفيذ: 15 ج.م + قيمة الطلب\n\n"
+    + "👤 الاسم: " + name + "\n📞 الموبايل: " + phone + "\n"
+    + "📍 التوصيل: المنيب — " + street + "\n🏠 التفاصيل: " + details;
+  document.getElementById("formWrap").style.display = "none";
+  document.getElementById("doneBox").style.display = "block";
+  openWa();
+}
+function openWa() {
+  window.open("https://wa.me/" + STORE_WA + "?text=" + encodeURIComponent(lastText), "_blank");
+}
+</script>
+</body>
+</html>
