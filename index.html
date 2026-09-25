@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>طلبات المنيب 🛵 — توصيل من قلب المنيب</title>
+<meta name="description" content="أول تطبيق توصيل مخصوص لمنطقة المنيب — أكل لذيذ من مطاعم منطقتك يوصلك لحد باب البيت.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============ BASE ============ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:'Cairo',system-ui,sans-serif;background:#060403;color:#FDF9F5;overflow-x:hidden;line-height:1.7}
+::selection{background:#FF5A00;color:#fff}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:0}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto}}
+
+/* ============ LOADER ============ */
+.loader{position:fixed;inset:0;z-index:9999;background:#060403;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .6s ease,visibility .6s}
+.loader.done{opacity:0;visibility:hidden}
+.loader .em{font-size:52px;animation:pump 1s ease infinite alternate}
+@keyframes pump{to{transform:scale(1.15) rotate(-4deg)}}
+.loader .t{font-size:24px;font-weight:900;letter-spacing:.5px}
+.loader .t b{color:#FF5A00}
+.loader .bar{width:210px;height:3px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+.loader .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#FF5A00,#FFB077);border-radius:3px;transition:width 1.4s cubic-bezier(.2,.7,.3,1)}
+
+/* ============ SCROLL PROGRESS ============ */
+#sprog{position:fixed;top:0;right:0;height:3px;z-index:9990;width:0;background:linear-gradient(90deg,#FF5A00,#FFB077,#FF5A00)}
+
+/* ============ AURORA ============ */
+.aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.16;mix-blend-mode:screen;animation:drift 16s ease-in-out infinite alternate}
+.blob.b1{width:560px;height:560px;background:#FF5A00;top:-140px;right:-120px}
+.blob.b2{width:460px;height:460px;background:#FF2E93;bottom:-120px;left:-100px;animation-delay:-6s}
+.blob.b3{width:380px;height:380px;background:#7A3B00;top:40%;left:30%;animation-delay:-11s}
+@keyframes drift{to{transform:translate(-60px,50px) scale(1.15)}}
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,90,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,90,0,.05) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(ellipse 70% 55% at 50% 0%,#000 40%,transparent 100%)}
+
+/* ============ NAV ============ */
+nav{position:fixed;top:14px;right:50%;transform:translateX(50%);z-index:900;display:flex;gap:4px;align-items:center;background:rgba(14,9,6,.72);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:7px 10px;max-width:94vw}
+nav .brand{display:flex;align-items:center;gap:7px;font-weight:900;font-size:15px;padding:0 8px}
+nav .brand .dot{width:26px;height:26px;border-radius:9px;background:linear-gradient(135deg,#FF5A00,#FFB077);display:flex;align-items:center;justify-content:center;font-size:14px}
+nav a.nl{padding:7px 13px;border-radius:11px;font-size:13px;color:#BFB3AA;transition:.2s}
+nav a.nl:hover{color:#fff;background:rgba(255,255,255,.06)}
+nav .cta{background:linear-gradient(135deg,#FF5A00,#E04E00);color:#fff;font-weight:800;font-size:13px;padding:8px 16px;border-radius:12px;box-shadow:0 4px 18px rgba(255,90,0,.35)}
+@media(max-width:760px){nav a.nl{display:none}}
+
+/* ============ HERO ============ */
+.hero{position:relative;z-index:1;min-height:100svh;display:flex;align-items:center;justify-content:center;padding:130px 18px 70px}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center;max-width:1080px;width:100%}
+@media(max-width:920px){.hero-grid{grid-template-columns:1fr}.hero-phone{display:none}}
+.hero-txt{text-align:center}
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,90,0,.1);border:1px solid rgba(255,90,0,.35);color:#FFB077;font-size:13px;font-weight:700;padding:8px 18px;border-radius:99px;margin-bottom:26px}
+.badge .live{width:8px;height:8px;border-radius:50%;background:#2ECC71;box-shadow:0 0 0 0 rgba(46,204,113,.6);animation:ping 1.6s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 9px rgba(46,204,113,0)}}
+.hero h1{font-size:clamp(36px,6.2vw,72px);font-weight:900;line-height:1.25;letter-spacing:-.5px}
+.hero h1 .grad{background:linear-gradient(120deg,#FF5A00 10%,#FFB077 55%,#FF5A00 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero h1 .u{position:relative;white-space:nowrap}
+.hero h1 .u::after{content:"";position:absolute;bottom:8px;right:0;left:0;height:10px;background:rgba(255,90,0,.25);border-radius:6px;z-index:-1}
+.hero p.sub{max-width:600px;margin:22px auto 0;color:#BFB3AA;font-size:clamp(15px,2vw,19px);font-weight:400}
+.hero .ctas{display:flex;gap:14px;justify-content:center;margin-top:36px;flex-wrap:wrap}
+.btn-x{position:relative;display:inline-flex;align-items:center;gap:9px;font-weight:800;font-size:16px;padding:15px 30px;border-radius:16px;transition:transform .2s,box-shadow .2s}
+.btn-x:hover{transform:translateY(-3px)}
+.btn-x.main{background:linear-gradient(135deg,#FF5A00,#E04E00);color:#fff;box-shadow:0 10px 34px rgba(255,90,0,.4)}
+.btn-x.ghost{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:#fff}
+.btn-x.green{background:linear-gradient(135deg,#17A05D,#0E7A45);color:#fff;box-shadow:0 10px 34px rgba(23,160,93,.3)}
+.hero .zonechip{margin-top:30px;display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.18);padding:9px 20px;border-radius:14px;color:#BFB3AA;font-size:13.5px}
+.float-emo{position:absolute;font-size:34px;opacity:.55;animation:floaty 6s ease-in-out infinite;filter:drop-shadow(0 8px 22px rgba(255,90,0,.35));z-index:-1}
+@keyframes floaty{50%{transform:translateY(-22px) rotate(6deg)}}
+
+/* ===== PHONE MOCKUP ===== */
+.hero-phone{display:flex;justify-content:center}
+.phone{width:288px;height:584px;background:#0B0705;border:3px solid rgba(255,255,255,.14);border-radius:44px;padding:12px;position:relative;box-shadow:0 40px 90px rgba(255,90,0,.22),inset 0 0 0 2px rgba(0,0,0,.6);animation:phone-float 6s ease-in-out infinite}
+@keyframes phone-float{50%{transform:translateY(-16px)}}
+.phone::before{content:"";position:absolute;top:20px;left:50%;transform:translateX(-50%);width:86px;height:22px;background:#000;border-radius:12px;z-index:2}
+.screen{width:100%;height:100%;border-radius:32px;overflow:hidden;background:#F6F4F1;display:flex;flex-direction:column}
+.s-head{background:linear-gradient(135deg,#FF5A00,#E04E00);color:#fff;padding:34px 14px 12px;display:flex;align-items:center;justify-content:space-between}
+.s-head .t{font-weight:900;font-size:15px}
+.s-head .z{background:rgba(255,255,255,.2);font-size:9.5px;font-weight:800;padding:3px 9px;border-radius:8px}
+.s-search{margin:9px 10px 0;background:#fff;border:1px solid #ECE6DF;border-radius:10px;padding:7px 10px;font-size:10px;color:#9C9088}
+.s-chips{display:flex;gap:5px;padding:9px 10px 4px;overflow:hidden}
+.s-chip{background:#fff;border:1px solid #ECE6DF;color:#75706B;font-size:8.5px;font-weight:700;padding:4px 10px;border-radius:99px;white-space:nowrap}
+.s-chip.on{background:#FF5A00;color:#fff;border-color:#FF5A00}
+.s-cards{padding:6px 10px;display:flex;flex-direction:column;gap:8px}
+.s-card{background:#fff;border:1px solid #ECE6DF;border-radius:13px;padding:9px;display:flex;gap:9px;align-items:center}
+.s-card .em{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.s-card .nm{font-size:11px;font-weight:800;color:#201D1A}
+.s-card .mt{font-size:8.5px;color:#9C9088}
+.s-card .rt{margin-inline-start:auto;font-size:9.5px;color:#F2A100;font-weight:800}
+.s-status{background:#0D0805;border-radius:14px;margin:0 10px 10px;padding:10px;display:flex;align-items:center;gap:8px}
+.s-status .dot{width:8px;height:8px;border-radius:50%;background:#2ECC71;animation:ping 1.6s infinite}
+.s-status .tx{color:#BFB3AA;font-size:9px;line-height:1.5}
+.s-status .tx b{color:#fff;font-size:10px}
+.scroll-hint{margin-top:44px;color:#6E645C;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:5px}
+.scroll-hint .m{width:20px;height:32px;border:2px solid #4A413B;border-radius:12px;position:relative}
+.scroll-hint .m::after{content:"";position:absolute;top:6px;left:50%;width:3px;height:7px;background:#FF5A00;border-radius:3px;transform:translateX(-50%);animation:wheel 1.6s infinite}
+@keyframes wheel{50%{top:13px;opacity:.4}}
+
+/* ============ REVEAL ============ */
+.rv{opacity:0;transform:translateY(34px);transition:opacity .8s cubic-bezier(.2,.65,.3,1),transform .8s cubic-bezier(.2,.65,.3,1)}
+.rv.in{opacity:1;transform:none}
+
+/* ============ SECTIONS ============ */
+section{position:relative;z-index:1;padding:96px 18px;max-width:1160px;margin:0 auto}
+.kicker{display:inline-flex;align-items:center;gap:7px;color:#FFB077;font-weight:800;font-size:13px;letter-spacing:1px;margin-bottom:14px}
+.kicker::before,.kicker::after{content:"";width:26px;height:2px;background:linear-gradient(90deg,#FF5A00,transparent)}
+.kicker::after{background:linear-gradient(90deg,transparent,#FF5A00)}
+h2.sec{font-size:clamp(28px,4.4vw,46px);font-weight:900;line-height:1.35}
+h2.sec .grad{background:linear-gradient(120deg,#FF5A00,#FFB077);-webkit-background-clip:text;background-clip:text;color:transparent}
+p.lead{color:#BFB3AA;max-width:640px;margin-top:14px;font-size:16px}
+
+/* ============ STATS ============ */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:900px;margin:0 auto}
+@media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:26px 12px;text-align:center;position:relative;overflow:hidden}
+.stat::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(255,90,0,.12),transparent 70%)}
+.stat .n{font-size:clamp(28px,3.6vw,42px);font-weight:900;color:#FF5A00;font-variant-numeric:tabular-nums}
+.stat .l{color:#BFB3AA;font-size:13.5px;margin-top:4px}
+
+/* ============ BENTO ============ */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:52px}
+.card{position:relative;background:#0D0805;border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:28px;overflow:hidden;transition:transform .25s ease,border-color .25s;transform-style:preserve-3d}
+.card:hover{border-color:rgba(255,90,0,.45)}
+.card::before{content:"";position:absolute;inset:-1px;border-radius:24px;padding:1px;background:conic-gradient(from var(--a,0deg),transparent 70%,rgba(255,90,0,.7),transparent);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .3s;animation:spin-a 3.5s linear infinite}
+.card:hover::before{opacity:1}
+@property --a{syntax:'<angle>';initial-value:0deg;inherits:false}
+@keyframes spin-a{to{--a:360deg}}
+.card .ic{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:25px;background:linear-gradient(135deg,rgba(255,90,0,.22),rgba(255,90,0,.06));border:1px solid rgba(255,90,0,.3);margin-bottom:18px}
+.card h3{font-size:18px;font-weight:800;margin-bottom:8px}
+.card p{color:#9C9088;font-size:13.5px;line-height:1.85}
+.card.w3{grid-column:span 3}.card.w2{grid-column:span 2}.card.w4{grid-column:span 4}
+@media(max-width:900px){.bento{grid-template-columns:repeat(2,1fr)}.card.w3,.card.w2,.card.w4{grid-column:span 2}}
+.card .tagline{position:absolute;top:20px;left:20px;font-size:10.5px;font-weight:800;color:#FFB077;background:rgba(255,90,0,.12);border:1px solid rgba(255,90,0,.3);padding:4px 10px;border-radius:99px}
+
+/* ============ STEPS ============ */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:50px}
+@media(max-width:820px){.steps{grid-template-columns:1fr}}
+.step{position:relative;background:#0D0805;border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:30px 26px;overflow:hidden}
+.step .num{font-size:60px;font-weight:900;line-height:1;background:linear-gradient(180deg,rgba(255,90,0,.5),rgba(255,90,0,.04));-webkit-background-clip:text;background-clip:text;color:transparent}
+.step h3{font-size:17.5px;font-weight:800;margin:12px 0 6px}
+.step p{color:#9C9088;font-size:13.5px}
+
+/* ============ RESTAURANTS (live) ============ */
+.rst-strip{display:flex;gap:14px;overflow:hidden;margin-top:46px;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.rst-track{display:flex;gap:14px;animation:slide 32s linear infinite;width:max-content}
+.rst-strip:hover .rst-track{animation-play-state:paused}
+@keyframes slide{to{transform:translateX(50%)}}
+.rc{display:flex;align-items:center;gap:12px;background:#0D0805;border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:13px 18px;min-width:230px}
+.rc .em{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:23px;flex-shrink:0}
+.rc .nm{font-weight:800;font-size:14.5px}
+.rc .mt{color:#9C9088;font-size:11.5px}
+
+/* ============ ZONES ============ */
+.zones{display:flex;gap:12px;flex-wrap:wrap;margin-top:36px;justify-content:center}
+.zone-p{display:flex;align-items:center;gap:9px;background:#0D0805;border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:13px 22px;color:#BFB3AA;font-weight:700;font-size:14px}
+.zone-p.now{border-color:rgba(255,90,0,.55);color:#fff;background:linear-gradient(135deg,rgba(255,90,0,.16),rgba(255,90,0,.04));box-shadow:0 8px 30px rgba(255,90,0,.18)}
+.zone-p .pin{font-size:17px}
+.zone-p .soon{font-size:10.5px;color:#FFB077;background:rgba(255,90,0,.12);padding:2px 9px;border-radius:99px;border:1px solid rgba(255,90,0,.3)}
+
+/* ============ CAPTAIN CTA ============ */
+.cap-cta{position:relative;border-radius:28px;overflow:hidden;background:linear-gradient(135deg,#170B02,#0D0805);border:1px solid rgba(255,90,0,.35);padding:clamp(30px,5vw,56px);display:flex;align-items:center;justify-content:space-between;gap:26px;flex-wrap:wrap}
+.cap-cta::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 85% 20%,rgba(255,90,0,.25),transparent 55%)}
+.cap-cta h3{font-size:clamp(22px,3.4vw,34px);font-weight:900;position:relative}
+.cap-cta p{color:#BFB3AA;margin-top:8px;max-width:520px;position:relative;font-size:14.5px}
+.cap-cta .btn-x{position:relative}
+
+/* ============ DOWNLOAD ============ */
+.dl{display:flex;gap:40px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:46px}
+.dl .qr{width:190px;height:190px;border-radius:22px;background:#fff;padding:12px;box-shadow:0 20px 60px rgba(255,90,0,.25);animation:qr-glow 3s ease-in-out infinite}
+@keyframes qr-glow{50%{box-shadow:0 20px 70px rgba(255,90,0,.5)}}
+.dl .ways{display:flex;flex-direction:column;gap:14px}
+.dl .ways .btn-x{justify-content:center;min-width:270px}
+.dl .note{color:#6E645C;font-size:12px;margin-top:8px}
+
+/* ============ FOOTER ============ */
+footer{border-top:1px solid rgba(255,255,255,.07);padding:44px 18px 60px;text-align:center;position:relative;z-index:1}
+footer .fbrand{font-size:20px;font-weight:900;margin-bottom:8px}
+footer .fbrand b{color:#FF5A00}
+footer .flinks{display:flex;gap:22px;justify-content:center;margin:18px 0;font-size:13.5px;color:#BFB3AA}
+footer .flinks a:hover{color:#FF5A00}
+footer .fine{color:#57504A;font-size:12px}
+footer .v2{display:inline-block;margin-top:14px;background:rgba(255,90,0,.1);border:1px solid rgba(255,90,0,.3);color:#FFB077;font-size:11px;font-weight:800;padding:5px 14px;border-radius:99px}
+</style>
+</head>
+<body>
+
+<div class="loader" id="loader">
+  <div class="em">🛵</div>
+  <div class="t">طلبات <b>المنيب</b></div>
+  <div class="bar"><i id="loadbar"></i></div>
+</div>
+<div id="sprog"></div>
+<div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="grid-bg"></div>
+
+<nav>
+  <span class="brand"><span class="dot">🛵</span> طلبات المنيب</span>
+  <a class="nl" href="#features">ليه إحنا</a>
+  <a class="nl" href="#how">إزاي بتطلب</a>
+  <a class="nl" href="#restaurants">المطاعم</a>
+  <a class="nl" href="#zones">المناطق</a>
+  <a class="cta" href="#download">⬇️ حمّل التطبيق</a>
+</nav>
+
+<header class="hero">
+  <span class="float-emo" style="top:22%;right:8%">🍔</span>
+  <span class="float-emo" style="top:26%;left:6%;animation-delay:-2s">🍕</span>
+  <span class="float-emo" style="bottom:22%;right:12%;animation-delay:-4s">🥤</span>
+  <span class="float-emo" style="bottom:28%;left:10%;animation-delay:-1s">🍰</span>
+  <div class="hero-grid">
+    <div class="hero-txt">
+      <div class="badge"><span class="live"></span> <span id="scramble">خدمة حية الآن داخل المنيب</span></div>
+      <h1>جعان؟ <span class="grad">طلبك يوصلك</span><br>من قلب <span class="u">المنيب</span></h1>
+      <p class="sub">أول تطبيق توصيل مخصوص لمنطقة المنيب — مطاعم منطقتك كلها في تطبيق واحد، بأقل رسوم توصيل، وأي حاجة من المنيب تكتبها وإحنا نجيبها.</p>
+      <div class="ctas">
+        <a class="btn-x main" href="https://files.catbox.moe/gvwu8p.apk">⬇️ حمّل التطبيق — أندرويد</a>
+        <a class="btn-x ghost" href="order/">🛒 اطلب أونلاين فوراً</a>
+      </div>
+      <div class="zonechip">📍 نغطي المنيب كلها — حوالين محطة المترو والدوار</div>
+      <div class="scroll-hint"><div class="m"></div>اسكرول</div>
+    </div>
+    <div class="hero-phone">
+      <div class="phone">
+        <div class="notch-dot"></div>
+        <div class="screen">
+          <div class="s-head"><span class="t">طلبات المنيب 🛵</span><span class="z">📍 المنيب</span></div>
+          <div class="s-search">🔍 دوّر على مطعم أو أكل…</div>
+          <div class="s-chips"><span class="s-chip on">الكل</span><span class="s-chip">فول وكشري</span><span class="s-chip">مشويات</span><span class="s-chip">عصائر</span><span class="s-chip">حلويات</span></div>
+          <div class="s-cards">
+            <div class="s-card"><div class="em" style="background:#FFE8D9">🍛</div><div><div class="nm">كشري المنيب الأصلي</div><div class="mt">🛵 5 ج.م • ⏱ 20–30 د</div></div><div class="rt">⭐ 4.6</div></div>
+            <div class="s-card"><div class="em" style="background:#FFE1E1">🍢</div><div><div class="nm">مشويات البرنس</div><div class="mt">🛵 10 ج.م • ⏱ 35–50 د</div></div><div class="rt">⭐ 4.7</div></div>
+            <div class="s-card"><div class="em" style="background:#E4F7EE">🥤</div><div><div class="nm">عصائر النيل</div><div class="mt">🛵 5 ج.م • ⏱ 10–20 د</div></div><div class="rt">⭐ 4.8</div></div>
+          </div>
+          <div class="s-status"><span class="dot"></span><div class="tx"><b>الكابتن في الطريق ليك 🛵</b><br>وصل المنيب — 5 دقايق ويبقى عندك</div></div>
+          <div class="s-cart">🛒 عرض السلة (3) • 95 ج.م</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="stats" style="padding-top:30px">
+  <div class="stats rv">
+    <div class="stat"><div class="n" data-c="8">0</div><div class="l">مطاعم محلية</div></div>
+    <div class="stat"><div class="n" data-c="66">0</div><div class="l">صنف على المنيو</div></div>
+    <div class="stat"><div class="n" data-c="45" data-suf=" د">0</div><div class="l">أقصى وقت توصيل</div></div>
+    <div class="stat"><div class="n" data-c="5" data-pre="من "> data-suf=" ج.م">0</div><div class="l">رسوم توصيل تبدأ من</div></div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="rv"><span class="kicker">ليه طلبات المنيب</span>
+  <h2 class="sec">مش تطبيق تاني… <span class="grad">ده تطبيق منطقتك</span></h2>
+  <p class="lead">التطبيقات الكبيرة مش بتغطي المنيب أصلاً — إحنا بنبدأ من هنا بقاعدة قوية، وبنفس مستوى الخدمة العالمي.</p></div>
+  <div class="bento">
+    <div class="card w3 rv"><span class="tagline">ZONE-LOCKED</span><div class="ic">📍</div><h3>مخصوص للمنيب 100%</h3><p>كل مطعم، كل شارع، وكل كابتن من جوه المنيب. عشان كده التوصيل أسرع والرسوم أرخص — خدمة حواري مش خدمة شركات.</p></div>
+    <div class="card w3 rv"><span class="tagline">LIVE MENU</span><div class="ic">⚡</div><h3>منيو بييتحدث لحظياً</h3><p>الأسعار والأصناف بتتحدث من لوحة التحكم فوراً — اللي تشوفه في التطبيق هو اللي شغال فعلاً في المطبخ دلوقتي.</p></div>
+    <div class="card w2 rv"><div class="ic">🛵</div><h3>كباتن المنيب</h3><p>كباتن من أهل المنطقة، مسجلين ومعتمدين من الإدارة — يوصلك بسرعة وعارف كل حتة.</p></div>
+    <div class="card w2 rv"><div class="ic">🎁</div><h3>عروض وأكواد</h3><p>خصومات دائمة على أول طلب وأكواد تنزل كل أسبوع — جرب <b style="color:#FFB077">MONEIB10</b>.</p></div>
+    <div class="card w2 rv"><div class="ic">✍️</div><h3>طلب مخصص</h3><p>مش في القائمة؟ اكتب طلبك الحر — من أي محل أو صيدلية في المنيب — والكابتن يجيبه لك.</p></div>
+    <div class="card w2 rv"><div class="ic">💬</div><h3>أوردر بيتأكد فوراً</h3><p>طلبك بيتوجه للمطعم والإدارة لحظة تأكيده — ومفيش وسط بياخد عمولة من جيبك.</p></div>
+    <div class="card w3 rv"><div class="ic">🚀</div><h3>مبني يتوسع</h3><p>البنية متعمولة من أول يوم للتوسع لمناطق جديدة — المنيب البداية، مش النهاية.</p></div>
+    <div class="card w3 rv"><div class="ic">🔒</div><h3>بياناتك في أمان</h3><p>اتصال مشفر بالكامل، والقاعدة البيانات خاصة ومعزولة — خصوصيتك خط أحمر.</p></div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="rv" style="text-align:center"><span class="kicker">ثلاث خطوات</span>
+  <h2 class="sec">جعان؟ <span class="grad">في ٣ خطوات يا معلم</span></h2></div>
+  <div class="steps">
+    <div class="step rv"><div class="num">01</div><h3>اختار مطعمك 🍽️</h3><p>أحسن مطاعم المنيب كلها قدامك — من الكشري للمشويات للعصائر.</p></div>
+    <div class="step rv"><div class="num">02</div><h3>اكتب عنوانك 📍</h3><p>شارعك جوه المنيب وعلامة مميزة — ومن غير ما تطول، الأوردر بيمشي.</p></div>
+    <div class="step rv"><div class="num">03</div><h3>الكابتن يوصلك 🛵</h3><p>كابتن من المنطقة بياخد الأوردر وبيوصلك سخن — بالهنا والشفا.</p></div>
+  </div>
+</section>
+
+<section id="custom">
+  <div class="rv" style="text-align:center"><span class="kicker">خدمة مميزة</span>
+  <h2 class="sec">مش في القائمة؟ <span class="grad">اكتب طلبك وإحنا نجيبه</span></h2>
+  <p class="lead" style="margin-inline:auto">أوردر مخصص من أي مكان جوه المنيب — فول من عند الفولايه، دواء من الصيدلية، حاجات من البقالة… اكتب طلبك بالتفصيل والكابتن بينفذه.</p></div>
+  <div class="steps">
+    <div class="step rv"><div class="num">01</div><h3>اكتب طلبك بالتفصيل ✍️</h3><p>إيه اللي عايزه، منين، والميزانية التقريبية — بالبلدي كمان.</p></div>
+    <div class="step rv"><div class="num">02</div><h3>الإدارة تأكد التفاصيل 💬</h3><p>نتواصل معاك نأكد الطلب والسعر — شفافية كاملة قبل ما يتحرك الكابتن.</p></div>
+    <div class="step rv"><div class="num">03</div><h3>الكابتن ينفذ ويوصلك 🛵</h3><p>أقرب كابتن ياخد الطلب ويوصله لحد باب البيت — وبالهنا.</p></div>
+  </div>
+  <div style="text-align:center;margin-top:34px" class="rv"><a class="btn-x green" href="custom/">✍️ اعمل طلب مخصص دلوقتي</a></div>
+</section>
+
+<section id="restaurants">
+  <div class="rv" style="text-align:center"><span class="kicker">من قلب المنيب</span>
+  <h2 class="sec">مطاعم <span class="grad">حيّة دلوقتي على التطبيق</span></h2>
+  <p class="lead" style="margin-inline:auto">دي مطاعم حقيقية من منطقتك — المنيو بيتحدث منها مباشرة للمنصة.</p></div>
+  <div class="rst-strip rv"><div class="rst-track" id="rstTrack"></div></div>
+</section>
+
+<section id="zones">
+  <div class="rv" style="text-align:center"><span class="kicker">خريطة التوسع</span>
+  <h2 class="sec">بدأنا في المنيب… <span class="grad">والطريق طويل</span></h2>
+  <p class="lead" style="margin-inline:auto">بنبني أساس متين في منطقة واحدة الأول — عشان كل منطقة جديدة نفتحها تبقى بنفس مستوى الخدمة.</p></div>
+  <div class="zones rv">
+    <span class="zone-p now"><span class="pin">📍</span> المنيب <span style="font-size:10.5px;color:#2ECC71">● شغالة دلوقتي</span></span>
+    <span class="zone-p"><span class="pin">🛵</span> حلوان <span class="soon">قريباً</span></span>
+    <span class="zone-p"><span class="pin">🛵</span> البساتين <span class="soon">قريباً</span></span>
+    <span class="zone-p"><span class="pin">🛵</span> المعادي <span class="soon">قريباً</span></span>
+    <span class="zone-p"><span class="pin">🛵</span> دار السلام <span class="soon">قريباً</span></span>
+  </div>
+</section>
+
+<section id="captain">
+  <div class="cap-cta rv">
+    <div>
+      <h3>بتشتغل موتوسيكل وبتدور على دخل إضافي؟ 🛵</h3>
+      <p>انضم لكباتن طلبات المنيب — سجل من الموقع، والإدارة بتوافق، وتبدأ تستقبل أوردرات من منطقتك. دخل إضافي ووقت مرن.</p>
+    </div>
+    <a class="btn-x main" href="captain/">سجّل كابتن جديد ←</a>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="rv" style="text-align:center"><span class="kicker">أسئلة بتتكرر</span>
+  <h2 class="sec">أي استفسار؟ <span class="grad">إجابته هنا</span></h2></div>
+  <div class="steps" style="grid-template-columns:1fr;max-width:780px;margin-inline:auto">
+    <div class="step rv"><h3>🛵 بيوصلوا لحد فين؟</h3><p>داخل المنيب كلها حالياً — حوالين محطة المترو والدوار وكل الشوارع الجوه المنطقة. ومناطق جديدة قربت.</p></div>
+    <div class="step rv"><h3>💵 إزاي بدفع؟</h3><p>كاش عند الاستلام، أو فودافون كاش / إنستاباي — براحتك.</p></div>
+    <div class="step rv"><h3>⏱ الأوردر بياخد قد إيه؟</h3><p>من 15 لـ 45 دقيقة حسب المطعم — والوقت مكتوب على كل مطعم قبل ما تطلب.</p></div>
+    <div class="step rv"><h3>✍️ أقدر أطلب حاجة مش موجودة في المنيو؟</h3><p>أيوة — خدمة الطلب المخصص: اكتب طلبك من أي مكان جوه المنيب والكابتن بينفذه. من صفحة «طلب مخصص».</p></div>
+    <div class="step rv"><h3>🛵 أعمل كابتن إزاي؟</h3><p>من صفحة «انضم كابتن» — سجل ببياناتك وصورتك، الإدارة بتراجع وتوافق، وبعدها تدخل رقمك في التطبيق وتستقبل الأوردرات.</p></div>
+  </div>
+</section>
+
+<section id="download">
+  <div class="rv" style="text-align:center"><span class="kicker">حمّل دلوقتي</span>
+  <h2 class="sec">التطبيق على <span class="grad">موبايلك في دقيقة</span></h2></div>
+  <div class="dl rv">
+    <img class="qr" src="qr.png" alt="QR تحميل التطبيق">
+    <div class="ways">
+      <a class="btn-x main" href="https://files.catbox.moe/gvwu8p.apk">⬇️ تحميل APK — أندرويد 7+</a>
+      <a class="btn-x ghost" href="order/">🌐 أو اطلب من المتصفح على طول</a>
+      <div class="note">امسح الـ QR بالكاميرا من أي موبايل — الإصدار 1.3 • مع منطقة الكباتن 🛵</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fbrand">طلبات <b>المنيب</b> 🛵</div>
+  <div class="flinks">
+    <a href="order/">اطلب أونلاين</a>
+    <a href="custom/">طلب مخصص</a>
+    <a href="https://files.catbox.moe/gvwu8p.apk">تحميل التطبيق</a>
+    <a href="captain/">انضم كابتن</a>
+  </div>
+  <div class="fine">الخدمة متاحة حالياً داخل المنيب فقط • كل الأوقات تقريبية • صُنع بحب في المنيب ❤️</div>
+  <div class="v2">Powered by V2 — Jemy (smart-jemy)</div>
+</footer>
+
+<script>
+/* ===== loader ===== */
+window.addEventListener("load", () => {
+  document.getElementById("loadbar").style.width = "100%";
+  setTimeout(() => document.getElementById("loader").classList.add("done"), 900);
+});
+setTimeout(() => document.getElementById("loader").classList.add("done"), 2600);
+
+/* ===== scroll progress ===== */
+addEventListener("scroll", () => {
+  const h = document.documentElement;
+  document.getElementById("sprog").style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + "%";
+}, {passive:true});
+
+/* ===== text scramble on hero badge ===== */
+(function scramble() {
+  const el = document.getElementById("scramble");
+  const chars = "خلمنيبطلباطبق🛵";
+  const target = el.textContent;
+  let frame = 0;
+  const run = () => {
+    frame++;
+    const done = Math.floor(frame / 2);
+    el.textContent = target.split("").map((c, i) =>
+      i < done ? c : chars[Math.floor(Math.random() * chars.length)]).join("");
+    if (done < target.length) requestAnimationFrame(run);
+    else el.textContent = target;
+  };
+  setTimeout(run, 1400);
+})();
+
+/* ===== reveal on scroll ===== */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+}), { threshold: 0.14 });
+document.querySelectorAll(".rv").forEach(el => io.observe(el));
+
+/* ===== counters ===== */
+const cio = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  const el = e.target, end = +el.dataset.c, pre = el.dataset.pre || "", suf = el.dataset.suf || "";
+  const t0 = performance.now();
+  const tick = t => {
+    const p = Math.min((t - t0) / 1400, 1), v = Math.floor(end * (1 - Math.pow(1 - p, 3)));
+    el.textContent = pre + v + suf;
+    if (p < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+  cio.unobserve(el);
+}), { threshold: 0.5 });
+document.querySelectorAll(".stat .n").forEach(el => cio.observe(el));
+
+/* ===== live restaurants strip (from published catalog) ===== */
+(async () => {
+  const track = document.getElementById("rstTrack");
+  try {
+    const r = await fetch("https://raw.githubusercontent.com/smart-jemy/moneib-menu/main/catalog.json?t=" + Date.now());
+    const cat = await r.json();
+    const cards = cat.restaurants.map(x =>
+      `<div class="rc"><div class="em" style="background:${x.color}">${x.emoji}</div>
+       <div><div class="nm">${x.name}</div><div class="mt">⭐ ${x.rating} • 🛵 ${x.fee} ج.م • ⏱ ${x.minTime}–${x.maxTime} د</div></div></div>`).join("");
+    track.innerHTML = cards + cards; /* loop */
+  } catch (e) {
+    track.innerHTML = '<div class="rc"><div class="em" style="background:#FFE8D9">🍛</div><div><div class="nm">كشري المنيب الأصلي</div><div class="mt">⭐ 4.6</div></div></div>';
+  }
+})();
+
+/* ===== tilt cards (desktop) ===== */
+if (matchMedia("(pointer:fine)").matches) {
+  document.querySelectorAll(".card").forEach(c => {
+    c.addEventListener("mousemove", e => {
+      const r = c.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      c.style.transform = `perspective(700px) rotateY(${x * 7}deg) rotateX(${-y * 7}deg) translateY(-3px)`;
+    });
+    c.addEventListener("mouseleave", () => c.style.transform = "");
+  });
+}
+</script>
+</body>
+</html>
