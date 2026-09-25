@@ -96,8 +96,9 @@ async function loadDB() {
   }
 }
 
-function addItem(rid, name) {
+function addItem(rid, nameEnc) {
   const r = DB.restaurants.find(x => x.id === rid);
+  const name = decodeURIComponent(nameEnc);
   const it = r.menu.flatMap(m => m.items).find(i => i.name === name);
   if (CART.length && CART[0].rid !== r.id) {
     if (!confirm("سلتك فيها أصناف من «" + CART[0].rname + "» — نفضيها ونبدأ من «" + r.name + "»؟")) return;
@@ -129,9 +130,9 @@ function renderList(app) {
   let list = DB.restaurants.filter(r => (cat === "الكل" || r.category === cat) && (!q || r.name.includes(q) || r.category.includes(q)));
   app.innerHTML = (DB.settings.serviceOpen ? "" : `<div class="closed-msg">⛔ ${esc(DB.settings.closedMsg)}</div>`) + `
     <input class="search" placeholder="🔍 دوّر على مطعم أو أكل…" value="${esc(q)}" oninput="view.q=this.value;render()">
-    <div class="chips">${cats.map(c => `<button class="chip ${c === cat ? "on" : ""}" onclick="view.cat='${esc(c)}';render()">${esc(c)}</button>`).join("")}</div>
+    <div class="chips">${cats.map(c => `<button class="chip ${c === cat ? "on" : ""}" onclick="view.cat=decodeURIComponent('${encodeURIComponent(c)}');render()">${esc(c)}</button>`).join("")}</div>
     ${list.map(r => `
-      <div class="rcard" onclick="view={t:'rest',id:'${r.id}'};render()">
+      <div class="rcard" onclick="view={t:'rest',id:'${encodeURIComponent(r.id)}'};render()">
         <div class="em" style="background:${esc(r.color)}">${esc(r.emoji)}</div>
         <div style="flex:1">
           <div class="nm"><span>${esc(r.name)}</span><span class="rt">⭐ ${r.rating}</span></div>
@@ -142,7 +143,7 @@ function renderList(app) {
 }
 
 function renderRest(app) {
-  const r = DB.restaurants.find(x => x.id === view.id);
+  const r = DB.restaurants.find(x => x.id === decodeURIComponent(view.id));
   if (!r) { view = { t: "list" }; return render(); }
   app.innerHTML = `
     <div class="row" style="margin-bottom:10px"><button class="back" onclick="view={t:'list'};render()">→</button></div>
@@ -154,7 +155,7 @@ function renderRest(app) {
     ${r.closed ? `<div class="closed-msg">المطعم مقفول حالياً — جرب مطعم تاني 😅</div>` : ""}
     ${r.menu.map(s => `<div class="sect-t">${esc(s.title)}</div>` + s.items.map(it => `
       <div class="mitem"><div class="inf"><div class="nm">${esc(it.name)}</div><div class="ds">${esc(it.desc)}</div><div class="pr">${money(it.price)}</div></div>
-      <button class="add" onclick="addItem('${r.id}','${esc(it.name).replace(/'/g, "\\'")}')" ${r.closed ? "disabled style='opacity:.4'" : ""}>+</button></div>`).join("")).join("")}`;
+      <button class="add" onclick="addItem('${r.id}','${encodeURIComponent(it.name)}')" ${r.closed ? "disabled style='opacity:.4'" : ""}>+</button></div>`).join("")).join("")}`;
 }
 
 function renderCart(app) {
