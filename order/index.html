@@ -129,6 +129,7 @@ function renderList(app) {
   const cats = ["الكل", ...new Set(DB.restaurants.map(r => r.category))];
   let list = DB.restaurants.filter(r => (cat === "الكل" || r.category === cat) && (!q || r.name.includes(q) || r.category.includes(q)));
   app.innerHTML = (DB.settings.serviceOpen ? "" : `<div class="closed-msg">⛔ ${esc(DB.settings.closedMsg)}</div>`) + `
+    <a href="../custom/" style="text-decoration:none;display:block;margin-bottom:10px"><div class="closed-msg" style="color:#7DE3AE;background:rgba(23,160,93,.08);border-color:rgba(23,160,93,.35)">✍️ محتاج حاجة مش في المنيو؟ سوبر ماركت، صيدلية، أي طلب من جوه المنيب — <b>اعمل طلب مخصص هنا</b></div></a>
     <input class="search" placeholder="🔍 دوّر على مطعم أو أكل…" value="${esc(q)}" oninput="view.q=this.value;render()">
     <div class="chips">${cats.map(c => `<button class="chip ${c === cat ? "on" : ""}" onclick="view.cat=decodeURIComponent('${encodeURIComponent(c)}');render()">${esc(c)}</button>`).join("")}</div>
     ${list.map(r => `
