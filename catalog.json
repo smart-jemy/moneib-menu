@@ -1,10 +1,10 @@
 {
- "publishedAt": 1790317022831,
+ "publishedAt": 1790318185910,
  "settings": {
   "zone": "المنيب",
   "currency": "ج.م",
   "serviceOpen": true,
-  "closedMsg": "الخدمة مقفولة حالياً — بارجع قريب جداً",
+  "closedMsg": "Soon",
   "streets": [
    "شارع المنيب الرئيسي",
    "حول محطة مترو المنيب",
@@ -20,7 +20,7 @@
     "active": true
    }
   ],
-  "whatsapp": "",
+  "whatsapp": "201148252590",
   "panelPin": "1234"
  },
  "restaurants": [
