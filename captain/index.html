@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>انضم كابتن — طلبات المنيب 🛵</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cairo',system-ui,sans-serif;background:#060403;color:#FDF9F5;line-height:1.7;min-height:100svh;display:flex;flex-direction:column;align-items:center;padding:34px 16px 60px}
+.aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.15;mix-blend-mode:screen}
+.blob.b1{width:460px;height:460px;background:#FF5A00;top:-120px;right:-100px}
+.blob.b2{width:380px;height:380px;background:#FF2E93;bottom:-100px;left:-80px}
+.wrap{position:relative;z-index:1;width:100%;max-width:520px}
+.brand{display:flex;align-items:center;gap:9px;font-weight:900;font-size:19px;margin-bottom:26px}
+.brand .dot{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,#FF5A00,#FFB077);display:flex;align-items:center;justify-content:center;font-size:17px}
+.back{position:absolute;top:0;left:0;color:#BFB3AA;font-size:13px;text-decoration:none;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:7px 14px}
+.hero-t{font-size:clamp(26px,5vw,36px);font-weight:900;line-height:1.35}
+.hero-t .grad{background:linear-gradient(120deg,#FF5A00,#FFB077);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-p{color:#BFB3AA;font-size:14.5px;margin:10px 0 26px}
+.perks{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:28px}
+.perk{background:rgba(255,90,0,.08);border:1px solid rgba(255,90,0,.28);color:#FFB077;font-size:12px;font-weight:700;padding:7px 14px;border-radius:99px}
+.panel{background:#0D0805;border:1px solid rgba(255,255,255,.09);border-radius:24px;padding:26px}
+.panel h3{font-size:16px;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.field{margin-bottom:14px}
+.field label{font-size:12.5px;color:#9C9088;display:block;margin-bottom:6px;font-weight:700}
+.field input,.field select{width:100%;padding:13px 14px;border:1px solid rgba(255,255,255,.12);border-radius:13px;background:#120B06;color:#FDF9F5;font-size:15px;font-family:inherit;outline:none;transition:border-color .2s}
+.field input:focus{border-color:#FF5A00}
+.hint{font-size:12px;color:#756B63;margin-top:5px}
+.photo-box{border:2px dashed rgba(255,90,0,.4);border-radius:16px;padding:18px;text-align:center;cursor:pointer;transition:.2s;background:rgba(255,90,0,.03)}
+.photo-box:hover{border-color:#FF5A00;background:rgba(255,90,0,.07)}
+.photo-box .em{font-size:30px}
+.photo-box .t{font-size:13px;color:#BFB3AA;margin-top:4px}
+.photo-preview{width:92px;height:92px;border-radius:50%;object-fit:cover;border:3px solid #FF5A00;margin:8px auto 0;display:block}
+.bigbtn{width:100%;background:linear-gradient(135deg,#FF5A00,#E04E00);color:#fff;font-weight:900;font-size:16.5px;border-radius:15px;padding:16px;margin-top:18px;box-shadow:0 10px 30px rgba(255,90,0,.3);transition:transform .2s}
+.bigbtn:hover{transform:translateY(-2px)}
+.bigbtn[disabled]{opacity:.45;box-shadow:none}
+.steps-note{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin-top:18px;font-size:12.5px;color:#9C9088;line-height:2}
+.steps-note b{color:#FFB077}
+.ok-box{display:none;text-align:center;padding:20px 6px}
+.ok-box .big{font-size:52px}
+.ok-box h3{justify-content:center}
+.done-note{background:rgba(46,204,113,.08);border:1px solid rgba(46,204,113,.35);color:#7DE3AE;border-radius:14px;padding:12px;font-size:13px;margin-top:12px;display:none}
+footer{margin-top:34px;text-align:center;color:#57504A;font-size:11.5px;position:relative;z-index:1}
+</style>
+</head>
+<body>
+<div class="aurora"><div class="blob b1"></div><div class="blob b2"></div></div>
+<div class="wrap">
+  <div class="brand" style="position:relative"><a class="back" href="../">→ الرئيسية</a><span class="dot">🛵</span> طلبات المنيب</div>
+  <div class="hero-t">اعمل <span class="grad">كابتن</span> في طلبات المنيب 🛵</div>
+  <p class="hero-p">دخل إضافي بوقت مرن — استقبل أوردرات من منطقتك وانت عارف كل حتة. التسجيل بياخد دقيقة، والإدارة بتراجع وتوافق.</p>
+  <div class="perks"><span class="perk">💰 دخل يومي</span><span class="perk">🕐 وقت مرن</span><span class="perk">📍 جوه المنيب بس</span><span class="perk">⚡ أوردرات مستمرة</span></div>
+
+  <div class="panel">
+    <div id="formWrap">
+      <h3>📝 تسجيل كابتن جديد</h3>
+      <div class="field"><label>الاسم بالكامل *</label><input id="c_name" placeholder="مثال: محمد أحمد"></div>
+      <div class="field"><label>رقم الموبايل (واتساب) *</label><input id="c_phone" inputmode="numeric" placeholder="01xxxxxxxxx" style="direction:ltr;text-align:left"><div class="hint">ده هيكون رقم دخولك للتطبيق كابتن بعد الموافقة</div></div>
+      <div class="field"><label>نوع المركبة</label><select id="c_vehicle"><option>موتوسيكل</option><option>عربية صغيرة</option><option>دراجة</option></select></div>
+      <div class="field"><label>صورتك الشخصية *</label>
+        <div class="photo-box" onclick="document.getElementById('c_photo').click()">
+          <div class="em">📸</div><div class="t">اضغط واختار صورتك</div>
+          <img id="phPrev" class="photo-preview" style="display:none" alt="">
+        </div>
+        <input type="file" id="c_photo" accept="image/*" style="display:none">
+        <div class="hint">الصورة بتوصل للإدارة مع طلبك — وتتقفل بخصوصية تامة</div>
+      </div>
+      <button class="bigbtn" id="sendBtn" onclick="submitApp()">📲 ابعت طلب الانضمام للإدارة</button>
+      <div class="done-note" id="okNote">✅ تم فتح واتساب — لو ما فتحش تلقائي، دوس الزر تاني. متنساش تبعت صورتك الشخصية في نفس الشات!</div>
+      <div class="steps-note">
+        <b>بعد ما تبعت الطلب إيه اللي هيحصل؟</b><br>
+        1️⃣ الإدارة بتراجع طلبك وصورتك<br>
+        2️⃣ لما توافق — رقمك بيتسجل كابتن معتمد<br>
+        3️⃣ تدخل رقم موبايلك في تطبيق طلبات المنيب (زر الكباتن) وتبدأ تستقبل الأوردرات 🛵
+      </div>
+    </div>
+    <div class="ok-box" id="okBox">
+      <div class="big">🎉</div>
+      <h3 style="margin:8px 0">طلبك وصل للإدارة!</h3>
+      <p style="color:#9C9088;font-size:13.5px">الإدارة هتراجع طلبك وترد عليك على رقمك في أقرب وقت. لو لسه ما بعتش صورتك الشخصية، ابعتها في نفس الشات بتاع واتساب اللي فتح.</p>
+      <button class="bigbtn" onclick="location.reload()">تسجيل كابتن تاني</button>
+    </div>
+  </div>
+</div>
+<footer>طلبات المنيب — تطوير <b style="color:#FFB077">V2</b> © 2026</footer>
+
+<script>
+const CATALOG_URL = "https://raw.githubusercontent.com/smart-jemy/moneib-menu/main/catalog.json";
+let STORE_WA = "";
+let photoData = null;
+
+(async () => {
+  try {
+    const cat = await (await fetch(CATALOG_URL + "?t=" + Date.now())).json();
+    STORE_WA = (cat.settings.whatsapp || "").replace(/[^0-9]/g, "");
+  } catch (e) {}
+})();
+
+/* صورة: تصغير وضغط في المتصفح عشان تتبعت بسهولة */
+document.getElementById("c_photo").addEventListener("change", e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const img = new Image();
+  img.onload = () => {
+    const max = 560, sc = Math.min(1, max / Math.max(img.width, img.height));
+    const cv = document.createElement("canvas");
+    cv.width = Math.round(img.width * sc); cv.height = Math.round(img.height * sc);
+    cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height);
+    photoData = cv.toDataURL("image/jpeg", 0.82);
+    const prev = document.getElementById("phPrev");
+    prev.src = photoData; prev.style.display = "block";
+  };
+  img.readAsDataURL ? null : null;
+  img.src = URL.createObjectURL(f);
+});
+
+function submitApp() {
+  const name = document.getElementById("c_name").value.trim();
+  const phone = document.getElementById("c_phone").value.trim();
+  const vehicle = document.getElementById("c_vehicle").value;
+  if (name.length < 3) { alert("اكتب اسمك بالكامل"); return; }
+  if (!/^01\d{9}$/.test(phone)) { alert("رقم موبايل مصري صحيح يبدأ بـ 01 (11 رقم)"); return; }
+  if (!photoData) { alert("ارفع صورتك الشخصية 📸"); return; }
+  if (!STORE_WA) { alert("التسجيل متاح حالياً عن طريق التواصل مع الإدارة — مفيش رقم واتساب متسجل. جرب بعدين."); return; }
+
+  const text = "🛵 *طلب انضمام كابتن — طلبات المنيب*\n\n"
+    + "👤 الاسم: " + name + "\n"
+    + "📞 الموبايل: " + phone + "\n"
+    + "🏍️ المركبة: " + vehicle + "\n"
+    + "📍 المنطقة: المنيب\n"
+    + "📸 الصورة الشخصية: هتبعتها في نفس الشات ده ⬇️\n\n"
+    + "— طلب مسجل من الموقع الرسمي";
+  const btn = document.getElementById("sendBtn");
+  btn.textContent = "⏳ جاري فتح واتساب…"; btn.disabled = true;
+  window.open("https://wa.me/" + STORE_WA + "?text=" + encodeURIComponent(text), "_blank");
+  document.getElementById("okNote").style.display = "block";
+  setTimeout(() => {
+    document.getElementById("formWrap").style.display = "none";
+    document.getElementById("okBox").style.display = "block";
+  }, 900);
+}
+</script>
+</body>
+</html>
