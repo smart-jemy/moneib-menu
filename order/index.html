@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://raw.githubusercontent.com; base-uri 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://raw.githubusercontent.com https://api.github.com; base-uri 'self'">
 <title>طلبات المنيب 🛵 — اطلب أونلاين</title>
 <style>
   :root { --primary:#FF5A00; --dark:#D94A00; --bg:#F6F4F1; --card:#fff; --text:#201D1A; --sec:#75706B; --line:#ECE6DF; }
@@ -68,6 +68,11 @@
 <script>
 /* ===== المنيو بيتنشر من لوحة التحكم على GitHub — الرابط الرسمي ===== */
 const CATALOG_URL = "https://raw.githubusercontent.com/smart-jemy/moneib-menu/main/catalog.json";
+const LIVE_REPO = "smart-jemy/moneib-live";
+const LIVE_TOKEN = "__LIVE_TOKEN__";   // توكن محصور على مستودع الأوردرات فقط
+function ghHeaders() { return { Authorization: "Bearer " + LIVE_TOKEN, Accept: "application/vnd.github+json" }; }
+function utf8ToB64(s) { const b = new TextEncoder().encode(s); let x = ""; b.forEach(v => x += String.fromCharCode(v)); return btoa(x); }
+function b64ToUtf8(b) { const bin = atob((b || "").replace(/\n/g, "")); const a = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i); return new TextDecoder().decode(a); }
 let DB = null, CART = JSON.parse(localStorage.getItem("v2cart") || "[]"), view = { t: "list" };
 
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
@@ -244,21 +249,92 @@ function placeOrder() {
   const text = buildOrderText(order);
   const wa = (DB.settings.whatsapp || "").replace(/[^0-9]/g, "");
   localStorage.setItem("v2lastorder", JSON.stringify(order));
+
+  // الأوردر اللحظي: إسناد تلقائي لكابتن أونلاين — fallback: واتساب
+  const btn = document.querySelector(".bigbtn"); btn.textContent = "⏳ بنوجّه أقرب كابتن…"; btn.disabled = true;
+  let live = false;
+  if (LIVE_TOKEN) {
+    try {
+      const j = {
+        id: order.id, createdAt: order.createdAt, status: "new",
+        restaurantName: order.restaurantName, items: order.items,
+        subtotal: order.subtotal, fee: order.fee, discount: order.discount, total: order.total,
+        customer: { name: order.name, phone: order.phone },
+        address: { street: order.street, details: order.details },
+        notes: order.notes, payment: order.payment, eta: order.eta,
+        assignedTo: null, captainName: "",
+        timeline: { assigned: null, accepted: null, delivering: null, delivered: null }
+      };
+      // اختار كابتن أونلاين من غير activeOrder
+      const caps = await (await fetch(`https://api.github.com/repos/${LIVE_REPO}/contents/captains.json`, { headers: ghHeaders(), cache: "no-store" })).json();
+      const captains = JSON.parse(b64ToUtf8(caps.content)).captains || {};
+      const now = Date.now(); let best = null, load = 1e9;
+      for (const h in captains) {
+        const c = captains[h];
+        if (c.online && now - (c.lastSeen || 0) < 90000 && (!c.activeOrder || c.activeOrder === null)) {
+          if ((c.load || 0) < load) { load = c.load || 0; best = h; }
+        }
+      }
+      let payload = { message: "order " + order.id, content: utf8ToB64(JSON.stringify(j)) };
+      if (best) {
+        j.status = "assigned"; j.assignedTo = best; j.captainName = captains[best].name || "كابتن";
+        j.timeline.assigned = Date.now();
+        payload.content = utf8ToB64(JSON.stringify(j));
+      }
+      const pr = await fetch(`https://api.github.com/repos/${LIVE_REPO}/contents/orders/${order.id}.json`, {
+        method: "PUT", headers: { ...ghHeaders(), "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (pr.ok) {
+        live = true;
+        if (best) { // حدّث حمل الكابتن
+          captains[best].activeOrder = order.id; captains[best].load = load + 1;
+          await fetch(`https://api.github.com/repos/${LIVE_REPO}/contents/captains.json`, {
+            method: "PUT", headers: { ...ghHeaders(), "Content-Type": "application/json" },
+            body: JSON.stringify({ message: "assign " + order.id, content: utf8ToB64(JSON.stringify({ updated: Date.now(), captains })), sha: caps.sha })
+          });
+        }
+      }
+    } catch (e) { live = false; }
+  }
+
+  localStorage.setItem("v2live", live ? order.id : "");
   CART = []; saveCart();
-  view = { t: "done", id: order.id, eta: order.eta, total: order.total, text, wa };
+  view = { t: "done", id: order.id, eta: order.eta, total: order.total, text, wa, live };
   render();
-  if (wa) window.open("https://wa.me/" + wa + "?text=" + encodeURIComponent(text), "_blank", "noopener,noreferrer");
+  if (!live && wa) window.open("https://wa.me/" + wa + "?text=" + encodeURIComponent(text), "_blank", "noopener,noreferrer");
 }
 
 function renderDone(app) {
+  const live = view.live;
   app.innerHTML = `<div class="panel done">
-    <div class="big">✅</div><h2 style="margin:8px 0">طلبك جاهز للإرسال 🎉</h2>
+    <div class="big">${live ? "🛵" : "✅"}</div><h2 style="margin:8px 0">${live ? "أوردرك وصل الكباتن!" : "طلبك جاهز للإرسال 🎉"}</h2>
     <div style="color:var(--sec)">رقم الطلب: <b style="color:var(--text)">#${view.id}</b></div>
     <div style="color:var(--sec);margin-top:4px">الإجمالي: <b style="color:var(--primary)">${money(view.total)}</b> • الوصول: ${esc(view.eta)}</div>
-    <div style="color:var(--sec);font-size:13px;margin-top:8px">${view.wa ? "لو واتساب ما فتحش تلقائي، دوس الزر تحت 👇" : "اضغط الزر تبعت تفاصيل الأوردر للمطعم 👇"}</div>
-    <button class="bigbtn green" onclick="sendWa()">📲 ابعت الأوردر واتساب</button>
+    ${live
+      ? `<div class="steps" id="track"></div><button class="bigbtn" onclick="refreshLiveTrack()">🔄 تحديث الحالة لحظيًا</button>`
+      : `<div style="color:var(--sec);font-size:13px;margin-top:8px">${view.wa ? "لو واتساب ما فتحش تلقائي، دوس الزر تحت 👇" : "اضغط الزر تبعت تفاصيل الأوردر للمطعم 👇"}</div>
+         <button class="bigbtn green" onclick="sendWa()">📲 ابعت الأوردر واتساب</button>`}
     <button class="bigbtn" style="background:#fff;color:var(--primary);border:2px solid var(--primary)" onclick="view={t:'list'};render()">اطلب حاجة تانية</button>
   </div>`;
+  if (live) refreshLiveTrack();
+}
+const LIVE_STEPS = [["تم تأكيد الأوردر", "#8B867F"], ["كابتن استلم الأوردر", "#F2A100"], ["في الطريق إليك 🛵", "#2E7DD1"], ["تم التسليم ✅", "#17A05D"]];
+async function refreshLiveTrack() {
+  const el = document.getElementById("track"); if (!el) return;
+  try {
+    const r = await fetch(`https://api.github.com/repos/${LIVE_REPO}/contents/orders/${view.id}.json`, { headers: ghHeaders(), cache: "no-store" });
+    if (!r.ok) throw 0;
+    const j = await r.json();
+    const o = JSON.parse(b64ToUtf8(j.content));
+    const st = o.status;
+    el.innerHTML = st === "cancelled"
+      ? '<div style="color:#D64541;font-weight:800">تم إلغاء الأوردر ❌</div>'
+      : LIVE_STEPS.map((x, i) => {
+          const on = st === "new" ? i === 0 : i <= (st === "assigned" ? 1 : st === "accepted" ? 2 : st === "delivering" ? 2 : 3);
+          return `<div class="st"><span class="dot" style="background:${on ? x[1] : "#D9D2CA"}"></span>${x[0]}${i === (st === "delivering" ? 2 : st === "assigned" ? 1 : st === "accepted" ? 2 : st === "delivered" ? 3 : 0) ? " • الآن" : ""}</div>`;
+        }).join("") + (o.captainName ? `<div style="text-align:center;color:var(--sec);font-size:12.5px;margin-top:6px">🛵 الكابتن: <b style="color:var(--text)">${o.captainName}</b></div>` : "");
+  } catch (e) { el.innerHTML = '<div style="color:var(--sec);font-size:12px;text-align:center">…جاري تحديث الحالة</div>'; }
 }
 function sendWa() {
   const wa = view.wa;
