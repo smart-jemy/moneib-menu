@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>طلبات المنيب 🛵 — اطلب أونلاين</title>
+<style>
+  :root { --primary:#FF5A00; --dark:#D94A00; --bg:#F6F4F1; --card:#fff; --text:#201D1A; --sec:#75706B; --line:#ECE6DF; }
+  * { box-sizing:border-box; margin:0; padding:0; font-family:"Segoe UI", Tahoma, Arial, sans-serif; }
+  body { background:var(--bg); color:var(--text); padding-bottom:90px; }
+  button { cursor:pointer; font-family:inherit; border:0; }
+  header { background:var(--primary); color:#fff; padding:14px 16px; display:flex; align-items:center; gap:10px; position:sticky; top:0; z-index:5; }
+  header .logo { font-size:22px; }
+  header h1 { font-size:17px; flex:1; }
+  header .zone { background:rgba(255,255,255,.2); border-radius:10px; padding:4px 10px; font-size:12px; font-weight:bold; }
+  main { max-width:640px; margin:0 auto; padding:12px; }
+  .search { width:100%; padding:11px 13px; border:1px solid #E0D8CE; border-radius:12px; background:#fff; font-size:14px; margin-bottom:10px; }
+  .chips { display:flex; gap:8px; overflow-x:auto; padding-bottom:10px; }
+  .chip { background:#fff; border:1px solid var(--line); border-radius:20px; padding:7px 14px; font-size:13px; white-space:nowrap; }
+  .chip.on { background:var(--primary); color:#fff; border-color:var(--primary); font-weight:bold; }
+  .rcard { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:13px; margin-bottom:10px; display:flex; gap:12px; align-items:center; cursor:pointer; }
+  .rcard .em { width:52px; height:52px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:26px; flex-shrink:0; }
+  .rcard .nm { font-weight:bold; font-size:16px; display:flex; justify-content:space-between; gap:6px; }
+  .rcard .rt { color:var(--amber); font-weight:bold; font-size:13px; }
+  .rcard .ct { color:var(--sec); font-size:12px; margin-top:2px; }
+  .rcard .mt { color:var(--sec); font-size:12px; margin-top:4px; }
+  .sect-t { font-weight:bold; font-size:15px; margin:16px 2px 8px; }
+  .mitem { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; margin-bottom:8px; display:flex; gap:10px; align-items:center; }
+  .mitem .inf { flex:1; }
+  .mitem .nm { font-weight:bold; font-size:14px; }
+  .mitem .ds { color:var(--sec); font-size:12px; margin-top:2px; }
+  .mitem .pr { color:var(--primary); font-weight:bold; font-size:13px; margin-top:4px; }
+  .add { width:38px; height:38px; border-radius:50%; background:var(--primary); color:#fff; font-size:20px; flex-shrink:0; }
+  .cartbar { position:fixed; bottom:0; left:0; right:0; background:var(--primary); color:#fff; padding:14px; text-align:center; font-weight:bold; font-size:15px; z-index:6; cursor:pointer; }
+  .row { display:flex; gap:8px; align-items:center; }
+  .qty button { width:30px; height:30px; border-radius:9px; background:#F1EBE4; font-size:16px; font-weight:bold; }
+  .qty .plus { background:var(--primary); color:#fff; }
+  .qty span { display:inline-block; width:30px; text-align:center; font-weight:bold; }
+  .panel { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:15px; margin-bottom:12px; }
+  .panel h3 { font-size:15px; margin-bottom:10px; }
+  .totrow { display:flex; justify-content:space-between; padding:5px 0; font-size:14px; }
+  .totrow.b { font-weight:bold; font-size:16px; border-top:1px solid var(--line); margin-top:6px; padding-top:10px; }
+  .bigbtn { width:100%; background:var(--primary); color:#fff; font-weight:bold; font-size:16px; border-radius:13px; padding:14px; margin-top:10px; }
+  .bigbtn.green { background:#17A05D; }
+  .field { margin-bottom:10px; }
+  .field label { font-size:12px; color:var(--sec); display:block; margin-bottom:4px; }
+  .field input, .field select, .field textarea { width:100%; padding:11px 12px; border:1px solid #E0D8CE; border-radius:11px; background:#FBF9F7; font-size:14px; font-family:inherit; }
+  .back { background:rgba(255,255,255,.2); color:#fff; border-radius:10px; padding:5px 13px; font-size:18px; }
+  .err { color:#D64541; font-size:12px; margin-top:4px; }
+  .done { text-align:center; padding:26px 10px; }
+  .done .big { font-size:56px; }
+  .closed-msg { background:#FFF2F0; color:#D64541; border:1px solid #F5C6C0; border-radius:14px; padding:16px; text-align:center; font-weight:bold; margin-bottom:12px; }
+  footer { text-align:center; color:var(--sec); font-size:12px; padding:20px; }
+  .loaderr { text-align:center; padding:40px 16px; }
+</style>
+</head>
+<body>
+<header>
+  <span class="logo">🛵</span>
+  <h1>طلبات المنيب</h1>
+  <span class="zone" id="zoneBadge">📍 المنيب</span>
+</header>
+<main id="app">جاري التحميل…</main>
+<div id="cartbar" style="display:none" onclick="showCart()"></div>
+<footer>طلبات المنيب — إصدار ويب 1.2 • تطوير <b>V2</b></footer>
+
+<script>
+/* ===== المنيو بيتنشر من لوحة التحكم على GitHub — الرابط الرسمي ===== */
+const CATALOG_URL = "https://raw.githubusercontent.com/smart-jemy/moneib-menu/main/catalog.json";
+let DB = null, CART = JSON.parse(localStorage.getItem("v2cart") || "[]"), view = { t: "list" };
+
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const money = v => v + " " + (DB?.settings?.currency || "ج.م");
+const subtotal = () => CART.reduce((a, l) => a + l.price * l.qty, 0);
+const cartCount = () => CART.reduce((a, l) => a + l.qty, 0);
+const restOf = () => DB.restaurants.find(r => r.id === CART[0]?.rid);
+const discount = () => {
+  const c = (localStorage.getItem("v2promo") || "").toUpperCase();
+  const p = (DB.settings.promos || []).find(p => p.active && p.code.toUpperCase() === c);
+  return p ? Math.floor(subtotal() * p.percent / 100) : 0;
+};
+const total = () => subtotal() - discount() + (restOf()?.fee || 0);
+const saveCart = () => { localStorage.setItem("v2cart", JSON.stringify(CART)); localStorage.removeItem("v2promo"); };
+
+async function loadDB() {
+  try {
+    const r = await fetch(CATALOG_URL + "?t=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) throw 0;
+    DB = await r.json();
+    document.getElementById("zoneBadge").textContent = "📍 " + DB.settings.zone;
+    return true;
+  } catch (e) {
+    document.getElementById("app").innerHTML = '<div class="loaderr panel">😖 مشكلة في تحميل المنيو<br><span style="color:var(--sec);font-size:13px">اتأكد من النت وحاول تاني</span><br><br><button class="bigbtn" style="max-width:220px" onclick="location.reload()">🔄 إعادة المحاولة</button></div>';
+    return false;
+  }
+}
+
+function addItem(rid, name) {
+  const r = DB.restaurants.find(x => x.id === rid);
+  const it = r.menu.flatMap(m => m.items).find(i => i.name === name);
+  if (CART.length && CART[0].rid !== r.id) {
+    if (!confirm("سلتك فيها أصناف من «" + CART[0].rname + "» — نفضيها ونبدأ من «" + r.name + "»؟")) return;
+    CART = [];
+  }
+  const line = CART.find(l => l.rid === r.id && l.name === it.name);
+  if (line) line.qty++; else CART.push({ rid: r.id, rname: r.name, name: it.name, price: it.price, qty: 1 });
+  saveCart(); render();
+}
+
+function render() {
+  const app = document.getElementById("app"), bar = document.getElementById("cartbar");
+  if (view.t === "list") renderList(app);
+  else if (view.t === "rest") renderRest(app);
+  else if (view.t === "cart") renderCart(app);
+  else if (view.t === "checkout") renderCheckout(app);
+  else if (view.t === "done") renderDone(app);
+  const n = cartCount();
+  if (n && view.t !== "cart" && view.t !== "checkout" && view.t !== "done") {
+    bar.style.display = "block";
+    bar.textContent = "🛒 عرض السلة (" + n + ") • " + money(subtotal());
+  } else bar.style.display = "none";
+}
+
+function renderList(app) {
+  const q = (view.q || "").trim();
+  const cat = view.cat || "الكل";
+  const cats = ["الكل", ...new Set(DB.restaurants.map(r => r.category))];
+  let list = DB.restaurants.filter(r => (cat === "الكل" || r.category === cat) && (!q || r.name.includes(q) || r.category.includes(q)));
+  app.innerHTML = (DB.settings.serviceOpen ? "" : `<div class="closed-msg">⛔ ${esc(DB.settings.closedMsg)}</div>`) + `
+    <input class="search" placeholder="🔍 دوّر على مطعم أو أكل…" value="${esc(q)}" oninput="view.q=this.value;render()">
+    <div class="chips">${cats.map(c => `<button class="chip ${c === cat ? "on" : ""}" onclick="view.cat='${esc(c)}';render()">${esc(c)}</button>`).join("")}</div>
+    ${list.map(r => `
+      <div class="rcard" onclick="view={t:'rest',id:'${r.id}'};render()">
+        <div class="em" style="background:${esc(r.color)}">${esc(r.emoji)}</div>
+        <div style="flex:1">
+          <div class="nm"><span>${esc(r.name)}</span><span class="rt">⭐ ${r.rating}</span></div>
+          <div class="ct">${esc(r.category)} • منطقة المنيب</div>
+          <div class="mt">🛵 ${money(r.fee)} • ⏱ ${r.minTime}–${r.maxTime} د ${r.closed ? " • <b style='color:#D64541'>مغلق</b>" : ""}</div>
+        </div>
+      </div>`).join("") || '<div class="panel" style="text-align:center;color:var(--sec)">مفيش نتايج 🤔</div>'}`;
+}
+
+function renderRest(app) {
+  const r = DB.restaurants.find(x => x.id === view.id);
+  if (!r) { view = { t: "list" }; return render(); }
+  app.innerHTML = `
+    <div class="row" style="margin-bottom:10px"><button class="back" onclick="view={t:'list'};render()">→</button></div>
+    <div class="panel">
+      <div class="row"><div style="width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;background:${esc(r.color)}">${esc(r.emoji)}</div>
+      <div style="flex:1"><b style="font-size:17px">${esc(r.name)}</b><div style="color:var(--sec);font-size:12px;margin-top:2px">${esc(r.category)} • ⭐ ${r.rating} • منطقة المنيب</div></div></div>
+      <div style="color:var(--sec);font-size:12px;margin-top:8px">🛵 ${money(r.fee)} • ⏱ ${r.minTime}–${r.maxTime} دقيقة • 🧾 أقل طلب ${money(r.minOrder)}</div>
+    </div>
+    ${r.closed ? `<div class="closed-msg">المطعم مقفول حالياً — جرب مطعم تاني 😅</div>` : ""}
+    ${r.menu.map(s => `<div class="sect-t">${esc(s.title)}</div>` + s.items.map(it => `
+      <div class="mitem"><div class="inf"><div class="nm">${esc(it.name)}</div><div class="ds">${esc(it.desc)}</div><div class="pr">${money(it.price)}</div></div>
+      <button class="add" onclick="addItem('${r.id}','${esc(it.name).replace(/'/g, "\\'")}')" ${r.closed ? "disabled style='opacity:.4'" : ""}>+</button></div>`).join("")).join("")}`;
+}
+
+function renderCart(app) {
+  if (!CART.length) { app.innerHTML = '<div class="panel done"><div class="big">🛒</div>سلتك فاضية<br><br><button class="bigbtn" onclick="view={t:\'list\'};render()">استعرض المطاعم</button></div>'; return; }
+  const r = restOf();
+  const below = subtotal() < r.minOrder;
+  app.innerHTML = `
+    <div class="row" style="margin-bottom:10px"><button class="back" onclick="view={t:'list'};render()">→</button><b>السلة — ${esc(r.name)}</b></div>
+    ${CART.map((l, i) => `<div class="mitem"><div class="inf"><div class="nm">${esc(l.name)}</div><div class="ds">${money(l.price)} للوحدة</div></div>
+      <div class="qty row"><button onclick="CART[${i}].qty--;if(CART[${i}].qty<1)CART.splice(${i},1);saveCart();render()">−</button><span>${l.qty}</span><button class="plus" onclick="CART[${i}].qty++;saveCart();render()">+</button></div>
+      <b style="width:70px;text-align:left;color:var(--primary)">${money(l.price * l.qty)}</b></div>`).join("")}
+    <div class="panel">
+      <div class="totrow"><span>مجموع الأصناف</span><span>${money(subtotal())}</span></div>
+      <div class="totrow"><span>رسوم التوصيل</span><span>${money(r.fee)}</span></div>
+      ${discount() ? `<div class="totrow" style="color:#17A05D"><span>الخصم 🎁</span><span>− ${money(discount())}</span></div>` : ""}
+      <div class="totrow b"><span>الإجمالي</span><span style="color:var(--primary)">${money(total())}</span></div>
+      <div class="row" style="margin-top:10px">
+        <input id="promo" placeholder="كود خصم (جرّب MONEIB10)" style="flex:1;padding:10px;border:1px solid #E0D8CE;border-radius:10px">
+        <button style="background:var(--primary);color:#fff;border-radius:10px;padding:10px 16px;font-weight:bold" onclick="const v=document.getElementById('promo').value.trim();localStorage.setItem('v2promo',v);render();if(!(DB.settings.promos||[]).some(p=>p.active&&p.code.toUpperCase()===v.toUpperCase()))alert('الكود مش صحيح 🤏');else alert('تم تطبيق الخصم 🎉')">تطبيق</button>
+      </div>
+      ${below ? `<div class="err" style="text-align:center;margin-top:8px">⚠️ أقل طلب من «${esc(r.name)}» هو ${money(r.minOrder)} — زوّد ${money(r.minOrder - subtotal())} كمان</div>` : ""}
+      <button class="bigbtn" ${below ? "disabled style='opacity:.5'" : ""} onclick="view={t:'checkout'};render()">إتمام الطلب ←</button>
+    </div>`;
+}
+
+function renderCheckout(app) {
+  const r = restOf();
+  if (DB.settings.serviceOpen === false) { app.innerHTML = `<div class="closed-msg">⛔ ${esc(DB.settings.closedMsg)}</div><button class="bigbtn" onclick="view={t:'list'};render()">رجوع</button>`; return; }
+  app.innerHTML = `
+    <div class="row" style="margin-bottom:10px"><button class="back" onclick="view={t:'cart'};render()">→</button><b>إتمام الطلب</b></div>
+    <div class="panel"><h3>📍 بيانات التوصيل</h3>
+      <div class="field"><label>الاسم</label><input id="c_name" placeholder="اسم صاحب الأوردر"></div>
+      <div class="field"><label>رقم الموبايل</label><input id="c_phone" inputmode="numeric" placeholder="01xxxxxxxxx"><div class="err" id="e_phone"></div></div>
+      <div class="field"><label>المنطقة</label><input disabled value="المنيب ✓ نوصّل هنا فقط حالياً"></div>
+      <div class="field"><label>الشارع / أقرب علامة</label><select id="c_street">${(DB.settings.streets || []).map(s => `<option>${esc(s)}</option>`).join("")}</select></div>
+      <div class="field"><label>التفاصيل (عمارة، دور، علامة)</label><textarea id="c_details" rows="2"></textarea></div>
+      <div class="field"><label>ملاحظات للمطعم (اختياري)</label><input id="c_notes" placeholder="مثال: من غير شطة"></div>
+    </div>
+    <div class="panel"><h3>🧾 ملخص</h3>
+      <div class="totrow"><span>المطعم</span><span>${esc(r.name)}</span></div>
+      <div class="totrow"><span>عدد الأصناف</span><span>${cartCount()}</span></div>
+      <div class="totrow b"><span>الإجمالي</span><span style="color:var(--primary)">${money(total())}</span></div>
+    </div>
+    <div class="panel"><h3>⏰ التوصيل والدفع</h3>
+      <div class="field"><label>وقت التوصيل</label><select id="c_time"><option value="now">في أسرع وقت</option><option value="later">بعد ساعة</option></select></div>
+      <div class="field"><label>طريقة الدفع</label><select id="c_pay"><option>كاش عند الاستلام</option><option>فودافون كاش / إنستاباي</option></select></div>
+    </div>
+    <button class="bigbtn" onclick="placeOrder()">تأكيد الطلب ✅</button>`;
+}
+
+function buildOrderText(o) {
+  return "🛵 *طلب جديد من طلبات المنيب*\n\n"
+    + "🔢 رقم الطلب: #" + o.id + "\n"
+    + "🍽️ المطعم: " + o.restaurantName + "\n"
+    + "📦 الأصناف:\n" + o.items.map(i => "  • " + i).join("\n") + "\n\n"
+    + "💵 الإجمالي: " + o.total + " ج.م (شامل التوصيل " + o.fee + " ج.م" + (o.discount ? " وخصم " + o.discount + " ج.م" : "") + ")\n"
+    + "💳 الدفع: " + o.payment + "\n"
+    + "⏰ التوصيل: " + o.eta + "\n\n"
+    + "👤 الاسم: " + o.name + "\n"
+    + "📞 الموبايل: " + o.phone + "\n"
+    + "📍 العنوان: المنيب — " + o.street + "\n"
+    + "🏠 التفاصيل: " + o.details + (o.notes ? "\n📝 ملاحظات: " + o.notes : "");
+}
+
+function placeOrder() {
+  const name = document.getElementById("c_name").value.trim();
+  const phone = document.getElementById("c_phone").value.trim();
+  const details = document.getElementById("c_details").value.trim();
+  if (!name) { alert("اكتب اسمك"); return; }
+  if (!/^01\d{9}$/.test(phone)) { document.getElementById("e_phone").textContent = "رقم موبايل مصري صحيح يبدأ بـ 01 (11 رقم)"; return; }
+  if (!details) { alert("اكتب رقم العمارة أو علامة مميزة"); return; }
+  const r = restOf();
+  const order = {
+    id: "W-" + (1000 + Math.floor(Math.random() * 9000)),
+    createdAt: Date.now(),
+    restaurantName: r.name,
+    items: CART.map(l => l.name + " ×" + l.qty),
+    subtotal: subtotal(), fee: r.fee, discount: discount(), total: total(),
+    name, phone,
+    street: document.getElementById("c_street").value,
+    details, notes: document.getElementById("c_notes").value.trim(),
+    payment: document.getElementById("c_pay").value,
+    eta: document.getElementById("c_time").value === "later" ? "بعد ساعة تقريباً" : (r.minTime + 5) + "–" + (r.maxTime + 10) + " دقيقة"
+  };
+  const text = buildOrderText(order);
+  const wa = (DB.settings.whatsapp || "").replace(/[^0-9]/g, "");
+  localStorage.setItem("v2lastorder", JSON.stringify(order));
+  CART = []; saveCart();
+  view = { t: "done", id: order.id, eta: order.eta, total: order.total, text, wa };
+  render();
+  if (wa) window.open("https://wa.me/" + wa + "?text=" + encodeURIComponent(text), "_blank");
+}
+
+function renderDone(app) {
+  app.innerHTML = `<div class="panel done">
+    <div class="big">✅</div><h2 style="margin:8px 0">طلبك جاهز للإرسال 🎉</h2>
+    <div style="color:var(--sec)">رقم الطلب: <b style="color:var(--text)">#${view.id}</b></div>
+    <div style="color:var(--sec);margin-top:4px">الإجمالي: <b style="color:var(--primary)">${money(view.total)}</b> • الوصول: ${esc(view.eta)}</div>
+    <div style="color:var(--sec);font-size:13px;margin-top:8px">${view.wa ? "لو واتساب ما فتحش تلقائي، دوس الزر تحت 👇" : "اضغط الزر تبعت تفاصيل الأوردر للمطعم 👇"}</div>
+    <button class="bigbtn green" onclick="sendWa()">📲 ابعت الأوردر واتساب</button>
+    <button class="bigbtn" style="background:#fff;color:var(--primary);border:2px solid var(--primary)" onclick="view={t:'list'};render()">اطلب حاجة تانية</button>
+  </div>`;
+}
+function sendWa() {
+  const wa = view.wa;
+  if (wa) window.open("https://wa.me/" + wa + "?text=" + encodeURIComponent(view.text), "_blank");
+  else if (navigator.share) navigator.share({ text: view.text }).catch(() => {});
+  else { navigator.clipboard.writeText(view.text); alert("تفاصيل الأوردر اتنسخت — ابعتها للمطعم"); }
+}
+
+loadDB().then(ok => { if (ok) render(); });
+</script>
+</body>
+</html>
