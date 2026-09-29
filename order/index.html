@@ -4,14 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://raw.githubusercontent.com https://api.github.com; base-uri 'self'">
-<title>طلبات المنيب 🛵 — اطلب أونلاين</title>
+<title>اطلبني 🛵 — اطلب أونلاين</title>
+<link rel="icon" type="image/png" href="../favicon.png">
 <style>
-  :root { --primary:#FF5A00; --dark:#D94A00; --bg:#F6F4F1; --card:#fff; --text:#201D1A; --sec:#75706B; --line:#ECE6DF; }
+  :root { --primary:#0098B0; --dark:#007A90; --bg:#F0F5F6; --card:#fff; --text:#201D1A; --sec:#75706B; --line:#DDEAED; }
   * { box-sizing:border-box; margin:0; padding:0; font-family:"Segoe UI", Tahoma, Arial, sans-serif; }
   body { background:var(--bg); color:var(--text); padding-bottom:90px; }
   button { cursor:pointer; font-family:inherit; border:0; }
   header { background:var(--primary); color:#fff; padding:14px 16px; display:flex; align-items:center; gap:10px; position:sticky; top:0; z-index:5; }
-  header .logo { font-size:22px; }
+  header .logo { width:34px; height:34px; border-radius:10px; background:#fff; padding:2px; }
   header h1 { font-size:17px; flex:1; }
   header .zone { background:rgba(255,255,255,.2); border-radius:10px; padding:4px 10px; font-size:12px; font-weight:bold; }
   main { max-width:640px; margin:0 auto; padding:12px; }
@@ -27,6 +28,7 @@
   .rcard .mt { color:var(--sec); font-size:12px; margin-top:4px; }
   .sect-t { font-weight:bold; font-size:15px; margin:16px 2px 8px; }
   .mitem { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; margin-bottom:8px; display:flex; gap:10px; align-items:center; }
+  .mitem .mimg { width:56px; height:56px; border-radius:12px; object-fit:cover; flex-shrink:0; }
   .mitem .inf { flex:1; }
   .mitem .nm { font-weight:bold; font-size:14px; }
   .mitem .ds { color:var(--sec); font-size:12px; margin-top:2px; }
@@ -53,17 +55,19 @@
   .closed-msg { background:#FFF2F0; color:#D64541; border:1px solid #F5C6C0; border-radius:14px; padding:16px; text-align:center; font-weight:bold; margin-bottom:12px; }
   footer { text-align:center; color:var(--sec); font-size:12px; padding:20px; }
   .loaderr { text-align:center; padding:40px 16px; }
+  .st { display:flex; align-items:center; gap:9px; padding:7px 4px; font-size:13.5px; color:var(--sec); font-weight:600; }
+  .st .dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
 </style>
 </head>
 <body>
 <header>
-  <span class="logo">🛵</span>
-  <h1>طلبات المنيب</h1>
+  <img class="logo" src="../logo.png" alt="اطلبني">
+  <h1>اطلبني</h1>
   <span class="zone" id="zoneBadge">📍 المنيب</span>
 </header>
 <main id="app">جاري التحميل…</main>
 <div id="cartbar" style="display:none" onclick="showCart()"></div>
-<footer>طلبات المنيب — إصدار ويب 1.2 • تطوير <b>V2</b></footer>
+<footer>اطلبني — إصدار ويب 1.2 • تطوير <b>V2</b></footer>
 
 <script>
 /* ===== المنيو بيتنشر من لوحة التحكم على GitHub — الرابط الرسمي ===== */
@@ -128,6 +132,8 @@ function render() {
   } else bar.style.display = "none";
 }
 
+function showCart() { view = { t: "cart" }; render(); }
+
 function renderList(app) {
   const q = (view.q || "").trim();
   const cat = view.cat || "الكل";
@@ -160,7 +166,7 @@ function renderRest(app) {
     </div>
     ${r.closed ? `<div class="closed-msg">المطعم مقفول حالياً — جرب مطعم تاني 😅</div>` : ""}
     ${r.menu.map(s => `<div class="sect-t">${esc(s.title)}</div>` + s.items.map(it => `
-      <div class="mitem"><div class="inf"><div class="nm">${esc(it.name)}</div><div class="ds">${esc(it.desc)}</div><div class="pr">${money(it.price)}</div></div>
+      <div class="mitem">${it.img ? `<img class="mimg" src="${esc(it.img)}" alt="" loading="lazy">` : ""}<div class="inf"><div class="nm">${esc(it.name)}</div><div class="ds">${esc(it.desc)}</div><div class="pr">${money(it.price)}</div></div>
       <button class="add" onclick="addItem('${r.id}','${encodeURIComponent(it.name)}')" ${r.closed ? "disabled style='opacity:.4'" : ""}>+</button></div>`).join("")).join("")}`;
 }
 
@@ -213,7 +219,7 @@ function renderCheckout(app) {
 }
 
 function buildOrderText(o) {
-  return "🛵 *طلب جديد من طلبات المنيب*\n\n"
+  return "🛵 *طلب جديد من اطلبني*\n\n"
     + "🔢 رقم الطلب: #" + o.id + "\n"
     + "🍽️ المطعم: " + o.restaurantName + "\n"
     + "📦 الأصناف:\n" + o.items.map(i => "  • " + i).join("\n") + "\n\n"
@@ -226,7 +232,7 @@ function buildOrderText(o) {
     + "🏠 التفاصيل: " + o.details + (o.notes ? "\n📝 ملاحظات: " + o.notes : "");
 }
 
-function placeOrder() {
+async function placeOrder() {
   const name = document.getElementById("c_name").value.trim();
   const phone = document.getElementById("c_phone").value.trim();
   const details = document.getElementById("c_details").value.trim();

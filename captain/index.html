@@ -3,43 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>انضم كابتن — طلبات المنيب 🛵</title>
+<title>انضم كابتن — اطلبني 🛵</title>
+<link rel="icon" type="image/png" href="../favicon.png">
 <meta name="robots" content="noindex">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://raw.githubusercontent.com; base-uri 'self'">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Cairo',system-ui,sans-serif;background:#060403;color:#FDF9F5;line-height:1.7;min-height:100svh;display:flex;flex-direction:column;align-items:center;padding:34px 16px 60px}
+body{font-family:'Cairo',system-ui,sans-serif;background:#03090B;color:#FDF9F5;line-height:1.7;min-height:100svh;display:flex;flex-direction:column;align-items:center;padding:34px 16px 60px}
 .aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.15;mix-blend-mode:screen}
-.blob.b1{width:460px;height:460px;background:#FF5A00;top:-120px;right:-100px}
-.blob.b2{width:380px;height:380px;background:#FF2E93;bottom:-100px;left:-80px}
+.blob.b1{width:460px;height:460px;background:#0098B0;top:-120px;right:-100px}
+.blob.b2{width:380px;height:380px;background:#00CFC7;bottom:-100px;left:-80px}
 .wrap{position:relative;z-index:1;width:100%;max-width:520px}
 .brand{display:flex;align-items:center;gap:9px;font-weight:900;font-size:19px;margin-bottom:26px}
-.brand .dot{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,#FF5A00,#FFB077);display:flex;align-items:center;justify-content:center;font-size:17px}
+.brand .dot{width:36px;height:36px;border-radius:11px;box-shadow:0 4px 14px rgba(0,152,176,.3)}
 .back{position:absolute;top:0;left:0;color:#BFB3AA;font-size:13px;text-decoration:none;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:7px 14px}
 .hero-t{font-size:clamp(26px,5vw,36px);font-weight:900;line-height:1.35}
-.hero-t .grad{background:linear-gradient(120deg,#FF5A00,#FFB077);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-t .grad{background:linear-gradient(120deg,#0098B0,#8ADBE8);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero-p{color:#BFB3AA;font-size:14.5px;margin:10px 0 26px}
 .perks{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:28px}
-.perk{background:rgba(255,90,0,.08);border:1px solid rgba(255,90,0,.28);color:#FFB077;font-size:12px;font-weight:700;padding:7px 14px;border-radius:99px}
-.panel{background:#0D0805;border:1px solid rgba(255,255,255,.09);border-radius:24px;padding:26px}
+.perk{background:rgba(0,152,176,.08);border:1px solid rgba(0,152,176,.28);color:#8ADBE8;font-size:12px;font-weight:700;padding:7px 14px;border-radius:99px}
+.panel{background:#061114;border:1px solid rgba(255,255,255,.09);border-radius:24px;padding:26px}
 .panel h3{font-size:16px;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px}
 .field{margin-bottom:14px}
 .field label{font-size:12.5px;color:#9C9088;display:block;margin-bottom:6px;font-weight:700}
-.field input,.field select{width:100%;padding:13px 14px;border:1px solid rgba(255,255,255,.12);border-radius:13px;background:#120B06;color:#FDF9F5;font-size:15px;font-family:inherit;outline:none;transition:border-color .2s}
-.field input:focus{border-color:#FF5A00}
+.field input,.field select{width:100%;padding:13px 14px;border:1px solid rgba(255,255,255,.12);border-radius:13px;background:#0A161A;color:#FDF9F5;font-size:15px;font-family:inherit;outline:none;transition:border-color .2s}
+.field input:focus{border-color:#0098B0}
 .hint{font-size:12px;color:#756B63;margin-top:5px}
-.photo-box{border:2px dashed rgba(255,90,0,.4);border-radius:16px;padding:18px;text-align:center;cursor:pointer;transition:.2s;background:rgba(255,90,0,.03)}
-.photo-box:hover{border-color:#FF5A00;background:rgba(255,90,0,.07)}
+.photo-box{border:2px dashed rgba(0,152,176,.4);border-radius:16px;padding:18px;text-align:center;cursor:pointer;transition:.2s;background:rgba(0,152,176,.03)}
+.photo-box:hover{border-color:#0098B0;background:rgba(0,152,176,.07)}
 .photo-box .em{font-size:30px}
 .photo-box .t{font-size:13px;color:#BFB3AA;margin-top:4px}
-.photo-preview{width:92px;height:92px;border-radius:50%;object-fit:cover;border:3px solid #FF5A00;margin:8px auto 0;display:block}
-.bigbtn{width:100%;background:linear-gradient(135deg,#FF5A00,#E04E00);color:#fff;font-weight:900;font-size:16.5px;border-radius:15px;padding:16px;margin-top:18px;box-shadow:0 10px 30px rgba(255,90,0,.3);transition:transform .2s}
+.photo-preview{width:92px;height:92px;border-radius:50%;object-fit:cover;border:3px solid #0098B0;margin:8px auto 0;display:block}
+.bigbtn{width:100%;background:linear-gradient(135deg,#0098B0,#007A90);color:#fff;font-weight:900;font-size:16.5px;border-radius:15px;padding:16px;margin-top:18px;box-shadow:0 10px 30px rgba(0,152,176,.3);transition:transform .2s}
 .bigbtn:hover{transform:translateY(-2px)}
 .bigbtn[disabled]{opacity:.45;box-shadow:none}
 .steps-note{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin-top:18px;font-size:12.5px;color:#9C9088;line-height:2}
-.steps-note b{color:#FFB077}
+.steps-note b{color:#8ADBE8}
 .ok-box{display:none;text-align:center;padding:20px 6px}
 .ok-box .big{font-size:52px}
 .ok-box h3{justify-content:center}
@@ -50,8 +51,8 @@ footer{margin-top:34px;text-align:center;color:#57504A;font-size:11.5px;position
 <body>
 <div class="aurora"><div class="blob b1"></div><div class="blob b2"></div></div>
 <div class="wrap">
-  <div class="brand" style="position:relative"><a class="back" href="../">→ الرئيسية</a><span class="dot">🛵</span> طلبات المنيب</div>
-  <div class="hero-t">اعمل <span class="grad">كابتن</span> في طلبات المنيب 🛵</div>
+  <div class="brand" style="position:relative"><a class="back" href="../">→ الرئيسية</a><img class="dot" src="../logo.png" alt="اطلبني"> اطلبني</div>
+  <div class="hero-t">اعمل <span class="grad">كابتن</span> في اطلبني 🛵</div>
   <p class="hero-p">دخل إضافي بوقت مرن — استقبل أوردرات من منطقتك وانت عارف كل حتة. التسجيل بياخد دقيقة، والإدارة بتراجع وتوافق.</p>
   <div class="perks"><span class="perk">💰 دخل يومي</span><span class="perk">🕐 وقت مرن</span><span class="perk">📍 جوه المنيب بس</span><span class="perk">⚡ أوردرات مستمرة</span></div>
 
@@ -75,7 +76,7 @@ footer{margin-top:34px;text-align:center;color:#57504A;font-size:11.5px;position
         <b>بعد ما تبعت الطلب إيه اللي هيحصل؟</b><br>
         1️⃣ الإدارة بتراجع طلبك وصورتك<br>
         2️⃣ لما توافق — رقمك بيتسجل كابتن معتمد<br>
-        3️⃣ تدخل رقم موبايلك في تطبيق طلبات المنيب (زر الكباتن) وتبدأ تستقبل الأوردرات 🛵
+        3️⃣ تدخل رقم موبايلك في تطبيق اطلبني (زر الكباتن) وتبدأ تستقبل الأوردرات 🛵
       </div>
     </div>
     <div class="ok-box" id="okBox">
@@ -86,7 +87,7 @@ footer{margin-top:34px;text-align:center;color:#57504A;font-size:11.5px;position
     </div>
   </div>
 </div>
-<footer>طلبات المنيب — تطوير <b style="color:#FFB077">V2</b> © 2026</footer>
+<footer>اطلبني — تطوير <b style="color:#8ADBE8">V2</b> © 2026</footer>
 
 <script>
 const CATALOG_URL = "https://raw.githubusercontent.com/smart-jemy/moneib-menu/main/catalog.json";
@@ -127,7 +128,7 @@ function submitApp() {
   if (!photoData) { alert("ارفع صورتك الشخصية 📸"); return; }
   if (!STORE_WA) { alert("التسجيل متاح حالياً عن طريق التواصل مع الإدارة — مفيش رقم واتساب متسجل. جرب بعدين."); return; }
 
-  const text = "🛵 *طلب انضمام كابتن — طلبات المنيب*\n\n"
+  const text = "🛵 *طلب انضمام كابتن — اطلبني*\n\n"
     + "👤 الاسم: " + name + "\n"
     + "📞 الموبايل: " + phone + "\n"
     + "🏍️ المركبة: " + vehicle + "\n"
