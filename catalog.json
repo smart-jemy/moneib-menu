@@ -1,5 +1,5 @@
 {
- "publishedAt": 1790322750212,
+ "publishedAt": 1790680779672,
  "settings": {
   "zone": "المنيب",
   "currency": "ج.م",
@@ -560,5 +560,16 @@
    ]
   }
  ],
- "captains": []
+ "captains": [
+  {
+   "name": "كابتن تجريبي — محمود",
+   "phoneHash": "demo1",
+   "deliveries": 37
+  },
+  {
+   "name": "كابتن تجريبي — سيد",
+   "phoneHash": "demo2",
+   "deliveries": 19
+  }
+ ]
 }
