@@ -1,5 +1,5 @@
 {
- "publishedAt": 1790776048437,
+ "publishedAt": 1790776340012,
  "settings": {
   "zone": "المنيب",
   "currency": "ج.م",
@@ -560,5 +560,11 @@
    ]
   }
  ],
- "captains": []
+ "captains": [
+  {
+   "name": "Jimy",
+   "phoneHash": "61a0db65cdc59bd7fbf18304c78c90c77d752c48a068d6d257a9a9c05a1840e7",
+   "deliveries": 0
+  }
+ ]
 }
