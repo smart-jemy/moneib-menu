@@ -1,5 +1,5 @@
 {
- "publishedAt": 1790775024562,
+ "publishedAt": 1790775616446,
  "settings": {
   "zone": "المنيب",
   "currency": "ج.م",
@@ -17,10 +17,10 @@
    {
     "code": "MONEIB10",
     "percent": 10,
-    "active": true
+    "active": false
    }
   ],
-  "whatsapp": "01104209465",
+  "whatsapp": "201104209465",
   "panelPin": "1234"
  },
  "restaurants": [
