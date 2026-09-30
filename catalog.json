@@ -1,5 +1,5 @@
 {
- "publishedAt": 1790680779672,
+ "publishedAt": 1790773899629,
  "settings": {
   "zone": "المنيب",
   "currency": "ج.م",
@@ -20,7 +20,7 @@
     "active": true
    }
   ],
-  "whatsapp": "201148252590",
+  "whatsapp": "01104209465",
   "panelPin": "1234"
  },
  "restaurants": [
@@ -560,16 +560,5 @@
    ]
   }
  ],
- "captains": [
-  {
-   "name": "كابتن تجريبي — محمود",
-   "phoneHash": "demo1",
-   "deliveries": 37
-  },
-  {
-   "name": "كابتن تجريبي — سيد",
-   "phoneHash": "demo2",
-   "deliveries": 19
-  }
- ]
+ "captains": []
 }
