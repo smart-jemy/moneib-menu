@@ -1,5 +1,5 @@
 {
- "publishedAt": 1790776353643,
+ "publishedAt": 1790776631785,
  "settings": {
   "zone": "المنيب",
   "currency": "ج.م",
@@ -564,6 +564,11 @@
   {
    "name": "Jimy",
    "phoneHash": "61a0db65cdc59bd7fbf18304c78c90c77d752c48a068d6d257a9a9c05a1840e7",
+   "deliveries": 0
+  },
+  {
+   "name": "Mohamed",
+   "phoneHash": "806f9f8f85da88b5e59d9ab53056e933d330638b6019070cc9de120cfca58a04",
    "deliveries": 0
   }
  ]
